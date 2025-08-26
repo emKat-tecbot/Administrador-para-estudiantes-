@@ -2,9 +2,9 @@ este proyecto es una herramienta diseñada para ayudar a estudiantes a organizar
 
 El objetivo es brindar una guía sencilla para que los estudiantes puedan mantener una alimentación balanceada y reconocer si están comiendo saludablemente, considerando sus necesidades académicas, económicas y de tiempo.
 
-Características principales:\n
-Registro de comidas diarias.\n
-Sugerencias de platillos accesibles y variados.\n
-Cálculo automático de macros básicos.\n
-Evaluación rápida sobre si la dieta es balanceada.\n
-Interfaz sencilla y pensada para estudiantes.
+Características principales:
+ Registro de comidas diarias.
+ Sugerencias de platillos accesibles y variados.
+ Cálculo automático de macros básicos.
+ Evaluación rápida sobre si la dieta es balanceada.
+ Interfaz sencilla y pensada para estudiantes.
