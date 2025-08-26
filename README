@@ -1,0 +1,10 @@
+Contexto:
+La organización efectiva de tareas, horarios y proyectos es un problema para la mayoría de los estudiantes. Esta falta de control sobre actividades puede generar estrés, bajo rendimiento o desinterés a la hora de realizar actividades académicas. Una herramienta que facilite este proceso centralizando y gestionando estas responsabilidades puede ser de alta utilidad para mejorar la productividad y fomentar la organización y la productividad.
+Con este objetivo nace nuestra propuesta, un programa modular en Python diseñado como un administrador global para estudiantes. La herramienta permite registrar, consultar, modificar y priorizar tareas, proyectos y horarios de clases, así como generar recordatorios y mantener un historial de actividades almacenados en bloques de texto. Esto para facilitar el seguimiento y planificación de tiempo de manera efectiva.
+La característica modular del programa permite ser una herramienta adaptable para nuevas funciones, adaptable a las necesidades de cada estudiante de manera individual. Este administrador no solo sirve como organizador o para la productividad, también fortalece la habilidad de planificación, responsabilidad y eficiencia de cada usuario gracias a que es una herramienta de uso gratuito y de Open Source. 
+El programa esta conformado principalmente por 5 funcionalidades principales:
+Pagina de inicio (Interfaz de usuario)
+Administrador de tareas.
+Administrador de horarios.
+Interfaz de calificaciones.
+Seguimiento Alimenticio.
