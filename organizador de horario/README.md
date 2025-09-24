@@ -1,5 +1,5 @@
 CONTEXTO
-Mi participación en el proyecto consistirá en el desarrollo de un organizador de horarios para estudiantes del Tecnológico de Monterrey, con el propósito de ofrecer una herramienta práctica que ayude a mejorar la administración del tiempo y la productividad académica. Este sistema permitirá registrar, visualizar y gestionar tanto el horario de clases como el horario de tareas de cada estudiante.
+Mi participación en el proyecto consistirá en el desarrollo de un organizador de horarios para estudiantes de nivel universitario, con el propósito de ofrecer una herramienta práctica que ayude a mejorar la administración del tiempo y la productividad académica. Este sistema permitirá registrar, visualizar y gestionar tanto el horario de clases como el horario de tareas de cada estudiante.
 El organizador funcionará en dos apartados principales:
 1.	Horario de clases
 •	El estudiante podrá ingresar las materias que desea cursar, junto con la cantidad de horas semanales correspondientes a cada una.
