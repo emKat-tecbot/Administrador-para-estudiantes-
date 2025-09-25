@@ -6,6 +6,7 @@ Estos permiten hacer representaciones rápidas de notas, ayudando a estudiantes 
 Las calculadoras de notas con herramientas usadas para calcular calificaciones, de tareas, exámenes y otros proyectos; las habilidades que tendrá esta calculadora serán:
 
 * Calculo del promedio
-* Calculo de cantidad de preguntas/ nota mínima para pasar un examen
-* Calculador de nota en un examen
-* Administrador de actuales notas por clase
+* Calculo de nota mínima para pasar un examen
+* Analisis de progreso y mejoramiento de notas
+* Calculo de tiempo de studio minimo necesario para pasar el examen final
+  
