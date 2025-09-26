@@ -290,7 +290,6 @@ def main():
         continuar = input("\n¿Quieres generar otro plan? (s/n): ").strip()
         if continuar == "":
             continuar = "n"
-
     print("\nGracias. Fin del asistente.")
 
 main()
