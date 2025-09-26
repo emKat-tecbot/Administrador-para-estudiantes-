@@ -1,5 +1,7 @@
+import Organizador de estudio
+
 def menu():
-  print("Bienvenido al administrador de notas. Que accion quisieras hacer?")
+  print("==BIENVENIDO AL ADMINISTRADOR PARA ESTUDIANTES==")
   print(""
 
 def main():
