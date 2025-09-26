@@ -1,0 +1,171 @@
+Codigo
+'''
+Proyecto: Organizador de horarios universitarios 
+
+Contexto:
+Este avance cubre únicamente el apartado de CLASES:
+- Registrar materias con horas semanales
+- Ver listado de materias
+- Acomodo automático (máx. 5 h/día + descansos)
+- Acomodo manual (respetando 5 h/día)
+Lo demás se integra en el siguiente avance.
+'''
+
+
+'''
+Función: registrar_clases()
+Propósito: Permite al usuario registrar las materias que cursará
+junto con el número de horas semanales de cada una.
+'''
+def registrar_clases():
+    materias = []
+    n = int(input("¿Cuántas materias deseas registrar? "))
+    for i in range(n):
+        nombre = input(f"Materia {i+1}: ")
+        horas = int(input(f"Horas semanales de {nombre}: "))
+        materias.append((nombre, horas))
+    return materias
+
+
+'''
+Función: mostrar_clases(materias)
+Propósito: Despliega en pantalla la lista de materias
+con las horas semanales que cada una ocupa.
+'''
+def mostrar_clases(materias):
+    print("\n--- Horario de Clases (crudo) ---")
+    if not materias:
+        print("No hay materias registradas.")
+    for m, h in materias:
+        print(f"{m}: {h} horas/semana")
+    print()
+
+
+'''
+Función: acomodo_automatico(materias)
+Propósito: Distribuye automáticamente las materias a lo largo de la semana,
+garantizando que no haya más de 5 horas de clases por día.
+Incluye descansos cuando detecta bloques seguidos.
+'''
+def acomodo_automatico(materias):
+    dias = {"Lunes": [], "Martes": [], "Miércoles": [],
+            "Jueves": [], "Viernes": []}
+    horas_dia = {d: 0 for d in dias}
+    i = 0
+    total_horas = sum(h for _, h in materias)
+
+    for materia, horas in materias:
+        while horas > 0:
+            dia = list(dias.keys())[i % 5]
+            if horas_dia[dia] < 5:
+                # pequeña pausa tras 2 clases seguidas (si alcanza el tiempo)
+                if (len(dias[dia]) >= 2 and
+                    dias[dia][-1] != "DESCANSO" and
+                    dias[dia][-2] != "DESCANSO" and
+                    horas_dia[dia] <= 3 and
+                    total_horas > 0):
+                    dias[dia].append("DESCANSO")
+                else:
+                    dias[dia].append(materia)
+                    horas_dia[dia] += 1
+                    horas -= 1
+                    total_horas -= 1
+            else:
+                i += 1  # pasar al siguiente día
+        i += 1
+    return dias
+
+
+'''
+Función: acomodo_manual(materias)
+Propósito: Permite al usuario asignar manualmente cada materia
+a un día específico, respetando el límite de 5 horas por día.
+'''
+def acomodo_manual(materias):
+    dias = {"Lunes": [], "Martes": [], "Miércoles": [],
+            "Jueves": [], "Viernes": []}
+    horas_dia = {d: 0 for d in dias}
+
+    for materia, horas in materias:
+        print(f"\nAcomodo manual para {materia} ({horas} h/semana)")
+        dia = input("Elige día (Lunes/Martes/Miércoles/Jueves/Viernes): ").strip().capitalize()
+        if dia.startswith("Mier"):
+            dia = "Miércoles"
+        if dia not in dias:
+            print("Día inválido. Se usará Lunes.")
+            dia = "Lunes"
+
+        while horas > 0:
+            if horas_dia[dia] < 5:
+                dias[dia].append(materia)
+                horas_dia[dia] += 1
+                horas -= 1
+            else:
+                print(f"{dia} ya tiene 5 horas. Elige otro día.")
+                dia = input("Día alterno: ").strip().capitalize()
+                if dia.startswith("Mier"):
+                    dia = "Miércoles"
+                if dia not in dias:
+                    print("Día inválido. Se usará Martes.")
+                    dia = "Martes"
+    return dias
+
+
+'''
+Función: mostrar_acomodo(dias)
+Propósito: Imprime en pantalla el horario generado (manual o automático).
+'''
+def mostrar_acomodo(dias):
+    print("\n--- Horario por día ---")
+    for d in ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]:
+        print(f"{d}: {dias[d]}")
+    print()
+
+
+
+'''
+Función: menu()
+Propósito: Despliega las opciones disponibles en este avance.
+'''
+def menu():
+    print("\n---------- MENU ----------")
+    print("1. Registrar materias")
+    print("2. Ver materias (crudo)")
+    print("3. Acomodo automático de clases")
+    print("4. Acomodo manual de clases")
+    print("5. Salir")
+
+
+'''
+Función: main()
+'''
+def main():
+    materias = []
+    while True:
+        menu()
+        op = input("Selecciona una opcion: ").strip()
+
+        if op == "1":
+            materias = registrar_clases()
+        elif op == "2":
+            mostrar_clases(materias)
+        elif op == "3":
+            if materias:
+                dias_auto = acomodo_automatico(materias)
+                mostrar_acomodo(dias_auto)
+            else:
+                print("Primero registra materias.")
+        elif op == "4":
+            if materias:
+                dias_man = acomodo_manual(materias)
+                mostrar_acomodo(dias_man)
+            else:
+                print("Primero registra materias.")
+        elif op == "5":
+            print("---------- FIN DEL PROGRAMA -----------")
+            break
+        else:
+            print("La opcion no esta en el menu intenta de nuevo por favor.")
+
+
+main()
