@@ -1,8 +1,7 @@
 from calculadora_de_callificaciones import calculadorDeNotas
 from Organizador_de_estudio import OrganizadorDeEstudio
 from organizador_de_horario import Codigo
-
-
+from organizador_de_comida import CodigoAvanceMacroComidas
 
 def menu():
   print("==BIENVENIDO AL ADMINISTRADOR PARA ESTUDIANTES==")
@@ -26,7 +25,7 @@ def main():
   if opcion == 1:
     calculadorDeNotas.main()
   elif opcion == 2:
-    # Organizador de comida
+    CodigoAvanceMacroComidas.main()
     print()
   elif opcion == 3:
     OrganizadorDeEstudio.main()
