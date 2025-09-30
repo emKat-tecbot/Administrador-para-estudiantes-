@@ -10,7 +10,8 @@ def menu():
   2. Organizador de comida
   3. Organizador de estudio
   4. Organizador de horario
-  5. Salir''')
+  5. Organizador de tareas
+  6. Salir''')
   return str(input("Selecciona una opcion (1-5): "))
 
 def main():
@@ -32,6 +33,35 @@ def main():
   elif opcion == 4:
     Codigo.main()
   elif opcion == 5:
+    
+def menuTarea():
+    print("--- MENÚ ---")
+    print("1. Agregar tareas")
+    print("2. Ver tareas")
+    print("3. Completar tarea")
+    print("4. Salir")
+
+def mainTarea():
+    tareas = []
+    while True:
+        menu()
+        opcion = input("Selecciona una opción: ")
+        if opcion == "1":
+            agregar_tareas(tareas)
+        elif opcion == "2":
+            mostrar_tareas(tareas)
+        elif opcion == "3":
+            completar_tarea(tareas)
+        elif opcion == "4":
+            print("Adiós")
+            break
+        else:
+            print("Opción no válida.")
+
+mainTarea ()
+
+
+    elif opcion == 6:
     print("Gracias, adios :D")
 
 main()
