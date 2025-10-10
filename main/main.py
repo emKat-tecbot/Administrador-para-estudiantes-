@@ -2,7 +2,7 @@ from calculadora_de_callificaciones import calculadorDeNotas
 from Organizador_de_estudio import OrganizadorDeEstudio
 from organizador_de_horario import Codigo
 from organizador_de_comida import CodigoAvanceMacroComidas
-from administrador de tareas import codigoTareas
+from administrador de tareas import menu
 
 def menu():
   print("==BIENVENIDO AL ADMINISTRADOR PARA ESTUDIANTES==")
