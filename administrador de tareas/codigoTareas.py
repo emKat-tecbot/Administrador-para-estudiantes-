@@ -15,11 +15,14 @@ def agregar_tareas(tareas):
     return tareas
 '''
 Caso de prueba:
-Entrada: "Leer libro", "si", "Estudiar biología", "no"
-Salida: Escribe la nueva tarea: leer libro
+Entrada: "tarea de programación", "si", "tarea de artes", "si", "practicar ejercicios mate", "no"
+Salida: Escribe la nueva tarea: tarea de programación
 Tarea agregada.
 ¿Deseas agregar otra tarea? Escribe 'si' o 'no': si
-Escribe la nueva tarea: estudiar biologia
+Escribe la nueva tarea: tarea de artes
+Tarea agregada. 
+¿Deseas agregar otra tarea? Escribe 'si' o 'no': si
+Escribe la nueva tarea: practicar ejercicios mate
 Tarea agregada. 
 ¿Deseas agregar otra tarea? Escribe 'si' o 'no': no
 --- MENÚ ---
@@ -38,15 +41,18 @@ def mostrar_tareas(tareas):
         i += 1
 '''
 Caso de prueba:
-Entrada: "Leer libro", "si", "Estudiar biología", "no"
+Entrada: "tarea de programación", "si", "tarea de artes", "practicar ejercicios mate, "no"
 Salida: -- Lista de tareas --
-1. leer libro - Pendiente
-2. estudiar biologia - Pendiente
+1. tarea de programación - Pendiente
+2. tarea de artes - Pendiente
+3. practicar ejercicios mate - Pendiente
 
-Si ya completaste una tarea, y vuelves a seleccionar la opción 2, te mostrara lo siguiente:
+Por ejemplo si ya completaste una tarea, seleccionando el numero 2 que en este caso es tarea de artes, 
+y vuelves a seleccionar la opción 2, te mostrara lo siguiente:
 -- Lista de tareas --
-1. leer libro - Pendiente
-2. estudiar biologia - Completada
+1. tarea de programación - Pendiente
+2. tarea de artes - Completada
+3. practicar ejercicios mate - Pendiente
 '''
 
 def completar_tarea(tareas):
@@ -66,6 +72,7 @@ Caso de prueba:
 Entrada: "Número de la tarea a completar:" 2 
 Salida: Tarea completada.
 '''
+
 
 
 
