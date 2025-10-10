@@ -33,18 +33,12 @@ def main():
   elif opcion == 4:
     Codigo.main()
   elif opcion == 5:
-    
-def menuTarea():
-    print("--- MENÚ ---")
-    print("1. Agregar tareas")
-    print("2. Ver tareas")
-    print("3. Completar tarea")
-    print("4. Salir")
 
+    
 def mainTarea():
     tareas = []
     while True:
-        menu()
+        menuTarea()
         opcion = input("Selecciona una opción: ")
         if opcion == "1":
             agregar_tareas(tareas)
@@ -58,7 +52,7 @@ def mainTarea():
         else:
             print("Opción no válida.")
 
-mainTarea ()
+mainTarea()
 
 
     elif opcion == 6:
