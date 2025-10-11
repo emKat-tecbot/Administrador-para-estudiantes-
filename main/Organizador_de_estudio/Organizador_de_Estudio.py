@@ -208,3 +208,21 @@ def reset_basico():
     indicador_cumplimiento_pct = 0.0
     indicador_horas_efectivas = 0.0
     indicador_estado = "no_listo"
+
+from types import SimpleNamespace
+
+def ejecutar_organizador():
+    reset_basico()
+    crear_plan_basico()
+    generar_secciones_basico()
+
+    print("\n--- Resumen del plan (minutos por sección) ---")
+    print("Teoría:", min_plan[0], " | Práctica:", min_plan[1], " | Simulacro:", min_plan[2])
+
+    print("\n--- Plan diario sugerido (sin fechas reales) ---")
+    imprimir_plan_diario_basico()
+
+    calcular_indicadores_basico()
+
+OrganizadorDeEstudio = SimpleNamespace()
+OrganizadorDeEstudio.iniciar = ejecutar_organizador
