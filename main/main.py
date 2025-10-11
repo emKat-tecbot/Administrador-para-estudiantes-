@@ -2,10 +2,10 @@ from calculadora_de_callificaciones import calculadorDeNotas
 from Organizador_de_estudio import OrganizadorDeEstudio
 from organizador_de_horario import Codigo
 from organizador_de_comida import CodigoAvanceMacroComidas
-from administrador de tareas import menu
+from administrador_de_tareas import menu
 from calculadora_de_callificaciones import calificacionMenu
 from organizador_de_horario import horario-menu
-
+from administrador_de_tareas import codigoTareas
 def menu():
   print("==BIENVENIDO AL ADMINISTRADOR PARA ESTUDIANTES==")
   print( f'''
@@ -48,27 +48,21 @@ def main():
     horario-menu.menu()
     Codigo.main()
   elif opcion == 5:
-
-    
-def mainTarea():
     tareas = []
     while True:
         menuTarea()
         opcion = input("Selecciona una opción: ")
         if opcion == "1":
-            agregar_tareas(tareas)
+            codigoTareas.agregar_tareas(tareas)
         elif opcion == "2":
-            mostrar_tareas(tareas)
+            codigoTareas.mostrar_tareas(tareas)
         elif opcion == "3":
-            completar_tarea(tareas)
+            codigoTareas.completar_tarea(tareas)
         elif opcion == "4":
             print("Adiós")
             break
         else:
             print("Opción no válida.")
-
-mainTarea()
-
 
     elif opcion == 6:
     print("Gracias, adios :D")
