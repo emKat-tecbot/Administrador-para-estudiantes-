@@ -1,13 +1,12 @@
 from calculadora_de_callificaciones import calculadorDeNotas
-from Organizador_de_estudio import OrganizadorDeEstudio
+from Organizador_de_estudio import Organizador_de_Estudio
 from organizador_de_horario import Codigo
-from organizador_de_comida import CodigoAvanceMacroComidas
 from administrador_de_tareas import menu
 from calculadora_de_callificaciones import calificacionMenu
-from organizador_de_horario import horario-menu
+from organizador_de_horario import horario_menu
 from administrador_de_tareas import codigoTareas
-from Seguimiento_Alimenticio import SA
-from Seguimiento_Alimenticio_Menu import SAmenu
+from Seguimiento_Alimenticio import Seguimiento_Alimenticio
+from Seguimiento_Alimenticio import Seguimiento_Alimenticio_Menu
 
 def menu():
   print("==BIENVENIDO AL ADMINISTRADOR PARA ESTUDIANTES==")
@@ -25,27 +24,27 @@ def main():
     opcion = menu()
     if opcion in ["1","2","3","4","5"]:
       opcion = int(opcion)
-      print(type(opcion))
       break
     else:
       print("La opcion no esta en el menu intenta de nuevo por favor.")
   if opcion == 1:
     while True:
-      optCal = calificacionMenu.menu
+      calificacionMenu.menu()
+      optCal = calificacionMenu.menu()
       if optCal == 1:
-        final = calculadora_de_callificaciones.calPorClase()
+        final = calculadorDeNotas.calPorClase()
       elif optCal == 2: 
-        qNNPP = calculadora_de_callificaciones.qNNPP(final)
+        qNNPP = calculadorDeNotas.qNNPP(final)
       elif optCal == 3:
-        calculadora_de_callificaciones.porgresoDeNota ()
+        calculadorDeNotas.porgresoDeNota ()
       elif optCal == 4:
-        calculadora_de_callificaciones.tiempoDeEstudio(final,qNNPP)
+        calculadorDeNotas.tiempoDeEstudio(final,qNNPP)
       else:
-        break
+          break
   elif opcion == 2:
-    print("\n=== SEGUIMIENTO ALIMENTICIO ===")
-    SAmenu.menu()  
-    SA.main()      
+     print("\n=== SEGUIMIENTO ALIMENTICIO ===")
+     Seguimiento_Alimenticio_Menu.menu()  
+     Seguimiento_Alimenticio.main()      
   elif opcion == 3:
     OrganizadorDeEstudio.iniciar()
   elif opcion == 4:
@@ -75,27 +74,26 @@ def main():
         funcion:mostrar_calendario.mostrar_matriz_clases(matriz_clases)
       elif op== 12:
         break
-      else
-      print("Opcion no valida intenta de nuevo")
-    Codigo.main()
+      else:
+        print("Opcion no valida intenta de nuevo")
+        Codigo.main()
   elif opcion == 5:
     tareas = []
     while True:
-        menuTarea()
-        opcion = input("Selecciona una opción: ")
-        if opcion == "1":
-            codigoTareas.agregar_tareas(tareas)
-        elif opcion == "2":
-            codigoTareas.mostrar_tareas(tareas)
-        elif opcion == "3":
-            codigoTareas.completar_tarea(tareas)
-        elif opcion == "4":
-            print("Adiós")
-            break
-        else:
-            print("Opción no válida.")
-
-    elif opcion == 6:
+      menuTarea()
+      opcion = input("Selecciona una opción: ")
+      if opcion == "1":
+        codigoTareas.agregar_tareas(tareas)
+      elif opcion == "2":
+          codigoTareas.mostrar_tareas(tareas)
+      elif opcion == "3":
+          codigoTareas.completar_tarea(tareas)
+      elif opcion == "4":
+          print("Adiós")
+          break
+      else:
+          print("Opción no válida.")
+  elif opcion == 6:
     print("Gracias, adios :D")
 
 main()
