@@ -43,7 +43,7 @@ def main():
     CodigoAvanceMacroComidas.main()
     print()
   elif opcion == 3:
-    OrganizadorDeEstudio.main()
+    OrganizadorDeEstudio.iniciar()
   elif opcion == 4:
     while True:
       horario-menu.menu()
