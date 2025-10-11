@@ -93,3 +93,47 @@ def pruebas():
     print("Promedios de prueba:", prom)
     objetivos = [60, 120, 50]
     evaluarDieta(totales, objetivos)
+    
+def main():
+    comidas = []
+    
+    print("\n--- Objetivos diarios ---")
+    objP = float(input("Proteínas necesarias (g): "))
+    objC = float(input("Carbohidratos necesarios (g): "))
+    objG = float(input("Grasas necesarias (g): "))
+    objetivos = [objP, objC, objG]
+
+    
+    while True:
+        
+        opcion = input("Selecciona una opción (1-7): ")
+
+        if opcion == "1":
+            nombre = input("Nombre de la comida (ej. Desayuno, Almuerzo, Cena): ")
+            nueva = registrarComida(nombre)
+            comidas.append(nueva)
+            print("Comida registrada correctamente.")
+        elif opcion == "2":
+            mostrarComidas(comidas)
+        elif opcion == "3":
+            if len(comidas) == 0:
+                print("No hay comidas registradas.")
+            else:
+                totales = calcularTotales(comidas)
+                print(f"\nTotales del día: Proteínas={totales[0]}g, Carbohidratos={totales[1]}g, Grasas={totales[2]}g")
+        elif opcion == "4":
+            prom = promedioMacros(comidas)
+            print(f"\nPromedio por comida: Proteínas={prom[0]:.2f}g, Carbohidratos={prom[1]:.2f}g, Grasas={prom[2]:.2f}g")
+        elif opcion == "5":
+            totales = calcularTotales(comidas)
+            evaluarDieta(totales, objetivos)
+        elif opcion == "6":
+            pruebas()
+        elif opcion == "7":
+            print("Saliendo del seguimiento alimenticio...")
+            break
+        else:
+            print("Opción no válida, intenta de nuevo.")
+
+if __name__ == "__main__":
+    main()
