@@ -66,19 +66,29 @@ comidas = [
     ["Cena", "150 g de pollo", 30, 0, 5]
 ]
 
-Funciones principales
 
-registrarComida(nombre)
-Solicita los datos de una comida (porción, macros, porciones consumidas) y devuelve una lista con los valores totales.
+ Inicializar una lista vacía llamada comidas donde se almacenarán los registros.
 
-mostrarComidas(comidas)
-Imprime en pantalla todas las comidas registradas con su información.
+ Opción 1 (Registrar comida)
+ • Pedir nombre, porción, macros por porción y número de porciones.
+ • Calcular el consumo total de cada macro.
+ • Guardar la información en la lista comidas en formato [nombre, porcion, proteinas, carbohidratos, grasas].
 
-calcularTotales(comidas)
-Recorre la lista principal y suma los valores de proteínas, carbohidratos y grasas.
+Opción 2 (Mostrar comidas)
+ • Recorrer la lista comidas y mostrar cada registro con su información.
 
-evaluarDieta(totales, objetivos)
-Compara los totales contra los objetivos y devuelve un resumen textual del resultado.
+Opción 3 (Totales)
+  Sumar todos los valores de proteínas, carbohidratos y grasas con un ciclo for.
 
-pruebas()
-Ejecuta casos de ejemplo para verificar que las funciones trabajen correctamente.
+Opción 4 (Promedio)
+ Calcular el promedio dividiendo los totales entre el número de comidas registradas.
+
+Opción 5 (Evaluar dieta)
+ Comparar los totales diarios con los objetivos del usuario y mostrar si cada macro está por debajo, por encima o en el objetivo.
+  Indicar si la dieta fue alta en proteínas, carbohidratos, grasas o balanceada.
+
+Opción 6 (Pruebas)
+ Ejecutar casos predeterminados de ejemplo para comprobar el correcto funcionamiento del código.
+
+ Opción 7 (Salir)
+ Terminar el ciclo while y mostrar un mensaje de despedida.
