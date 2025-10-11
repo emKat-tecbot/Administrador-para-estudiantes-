@@ -4,7 +4,7 @@ from organizador_de_horario import Codigo
 from organizador_de_comida import CodigoAvanceMacroComidas
 from administrador de tareas import menu
 from calculadora_de_callificaciones import calificacionMenu
-from organizador_de_horario import menu-horario
+from organizador_de_horario import horari-menu
 
 def menu():
   print("==BIENVENIDO AL ADMINISTRADOR PARA ESTUDIANTES==")
