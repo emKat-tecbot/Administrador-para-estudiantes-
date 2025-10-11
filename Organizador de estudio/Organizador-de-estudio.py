@@ -1,69 +1,56 @@
-
 # -----------------------------
 # Generador de planes de estudio
 # -----------------------------
+
+# 0=teoría, 1=práctica, 2=simulacro
+etiquetas = ["TEORÍA", "PRÁCTICA", "SIMULACRO"]
+
 materia = ""
 tipo_curso = ""
 dificultad = 3               # 1..5
-dias_restantes = 0           # entero 
+dias_restantes = 0           # entero
 carga_diaria_min = 0         # minutos por día
 
-# Pesos por sección (suman ≈ 1.0)
-peso_teoria = 0.35
-peso_practica = 0.45
-peso_simulacro = 0.20
+# Pesos por sección en una lista [T, P, S] (suman ~1.0)
+pesos = [0.35, 0.45, 0.20]
 
-# Minutos planificados por sección
-min_plan_teoria = 0
-min_plan_practica = 0
-min_plan_simulacro = 0
+# Minutos planificados y realizados [T, P, S]
+min_plan = [0, 0, 0]
+min_hechos = [0, 0, 0]
 
-# Minutos realizados simulados (se actualizan con el "plan" impreso)
-min_hechos_teoria = 0
-min_hechos_practica = 0
-min_hechos_simulacro = 0
-
-# Indicadores de resultado
+# Indicadores
 indicador_cumplimiento_pct = 0.0
 indicador_horas_efectivas = 0.0
 indicador_estado = "no_listo"
 
 
 # -----------------------------
-# Funciones de apoyo
+# Funciones de apoyo (listas)
 # -----------------------------
+def normalizar_pesos():
+    s = pesos[0] + pesos[1] + pesos[2]
+    if s != 0:
+        pesos[0] /= s
+        pesos[1] /= s
+        pesos[2] /= s
+
 def seleccionar_plantilla_simple(tipo):
     """
-    Ajusta pesos por tipo de curso.
-    Tipos conocidos: Calculo/Programacion. Si no, usa valores por defecto.
+    Ajusta pesos por tipo de curso usando la lista [T,P,S].
     """
-    global peso_teoria, peso_practica, peso_simulacro
     t = tipo.strip().lower()
-
     if t == "calculo" or t == "cálculo":
-        peso_teoria = 0.35
-        peso_practica = 0.50
-        peso_simulacro = 0.15
+        pesos[0], pesos[1], pesos[2] = 0.35, 0.50, 0.15
     elif t == "programacion" or t == "programación":
-        peso_teoria = 0.25
-        peso_practica = 0.55
-        peso_simulacro = 0.20
+        pesos[0], pesos[1], pesos[2] = 0.25, 0.55, 0.20
     else:
-        peso_teoria = 0.35
-        peso_practica = 0.45
-        peso_simulacro = 0.20
-
-    # Normalización suave
-    s = peso_teoria + peso_practica + peso_simulacro
-    if s != 0.0:
-        peso_teoria = peso_teoria / s
-        peso_practica = peso_practica / s
-        peso_simulacro = peso_simulacro / s
+        pesos[0], pesos[1], pesos[2] = 0.35, 0.45, 0.20
+    normalizar_pesos()
 
 
 def crear_plan_basico():
     """
-    Pide datos al usuario (wizard) y valida que sean razonables.
+    Pide datos al usuario (igual que antes).
     """
     global materia, tipo_curso, dificultad, dias_restantes, carga_diaria_min
 
@@ -76,13 +63,13 @@ def crear_plan_basico():
         d_str = input("Dificultad (1-5): ").strip()
         if d_str.isdigit():
             d_val = int(d_str)
-            if d_val >= 1 and d_val <= 5:
+            if 1 <= d_val <= 5:
                 dificultad = d_val
                 dif_ok = True
         if not dif_ok:
             print("-> Valor inválido. Intenta de nuevo.")
 
-    # días restantes (entero > 0)
+    # días restantes
     dias_ok = False
     while not dias_ok:
         dr = input("Días restantes (entero, ej. 7): ").strip()
@@ -94,7 +81,7 @@ def crear_plan_basico():
         if not dias_ok:
             print("-> Valor inválido. Intenta de nuevo.")
 
-    # carga diaria (minutos por día, entero > 0)
+    # carga diaria (min)
     carga_ok = False
     while not carga_ok:
         cd = input("Carga diaria (minutos, ej. 120): ").strip()
@@ -111,117 +98,86 @@ def crear_plan_basico():
 
 def generar_secciones_basico():
     """
-    Calcula los minutos plan por sección, ajustando práctica por dificultad.
+    Calcula min_plan [T, P, S]. Ajuste por dificultad SOLO en práctica.
     """
-    global min_plan_teoria, min_plan_practica, min_plan_simulacro
-
     min_totales = dias_restantes * carga_diaria_min
 
-    # Ajuste por dificultad: práctica sube/baja 15% por nivel desde 3.
+    # práctica sube/baja 15% por nivel desde 3
     dt = dificultad - 3            # -2..+2
-    ajuste = 0.15 * dt             # -0.30..+0.30
-    p_pr = peso_practica * (1 + ajuste)
-    if p_pr < 0.10:
-        p_pr = 0.10
-    if p_pr > 0.70:
-        p_pr = 0.70
+    p_pr = pesos[1] * (1 + 0.15 * dt)
+    if p_pr < 0.10: p_pr = 0.10
+    if p_pr > 0.70: p_pr = 0.70
 
     rem = 1.0 - p_pr
-    base_ts = peso_teoria + peso_simulacro
-    if base_ts <= 0.0:
-        p_te = 0.50
-        p_si = 0.50
+    base_ts = pesos[0] + pesos[2]
+    if base_ts <= 0:
+        p_te, p_si = 0.50, 0.50
     else:
-        p_te = (peso_teoria / base_ts) * rem
-        p_si = (peso_simulacro / base_ts) * rem
+        p_te = (pesos[0] / base_ts) * rem
+        p_si = (pesos[2] / base_ts) * rem
 
-    min_plan_teoria = int(min_totales * p_te)
-    min_plan_practica = int(min_totales * p_pr)
-    min_plan_simulacro = int(min_totales * p_si)
+    min_plan[0] = int(min_totales * p_te)
+    min_plan[1] = int(min_totales * p_pr)
+    min_plan[2] = int(min_totales * p_si)
 
 
 def imprimir_plan_diario_basico():
     """
-    Genera un plan orientativo por día sin fechas reales.
-    Usa bloques de 30 minutos y reparte de forma proporcional.
-    No guarda estructuras: solo imprime y actualiza acumulados.
+    Genera plan por día con bloques de 30 min.
+    Prioridad simple: PRÁCTICA > TEORÍA > SIMULACRO.
+    Actualiza min_hechos [T, P, S].
     """
-    global min_hechos_teoria, min_hechos_practica, min_hechos_simulacro
-
     BLOQUE = 30
-    dia = 1
-    while dia <= dias_restantes:
+    min_hechos[0] = min_hechos[1] = min_hechos[2] = 0
+
+    for dia in range(1, dias_restantes + 1):
         print("\nDía", dia)
         asignado = 0
-
-        # Capacidad diaria en minutos
         cap_dia = carga_diaria_min
 
-        # Metas restantes
-        falt_te = min_plan_teoria - min_hechos_teoria
-        falt_pr = min_plan_practica - min_hechos_practica
-        falt_si = min_plan_simulacro - min_hechos_simulacro
-
-        # Mientras haya capacidad y algo por hacer, asignar bloques
-        intentos = 0
-        while intentos < 12:  # límite defensivo de bloques/día
+        intentos = 0    # límite defensivo de bloques/día
+        while intentos < 12:
             if asignado + BLOQUE > cap_dia:
                 break
 
-            # Recalcular faltantes
-            falt_te = min_plan_teoria - min_hechos_teoria
-            falt_pr = min_plan_practica - min_hechos_practica
-            falt_si = min_plan_simulacro - min_hechos_simulacro
+            falt_T = min_plan[0] - min_hechos[0]
+            falt_P = min_plan[1] - min_hechos[1]
+            falt_S = min_plan[2] - min_hechos[2]
 
-            if falt_te <= 0 and falt_pr <= 0 and falt_si <= 0:
+            if falt_T <= 0 and falt_P <= 0 and falt_S <= 0:
                 break
 
-            # Prioridad simple: práctica > teoría > simulacro si hay mucho por hacer
-            elegir = "ninguna"
-            if falt_pr > 0:
-                elegir = "practica"
-            elif falt_te > 0:
-                elegir = "teoria"
-            elif falt_si > 0:
-                elegir = "simulacro"
+            # elegir sección (índice): 1>0>2 (P>T>S)
+            elegido = -1
+            if falt_P > 0:
+                elegido = 1
+            elif falt_T > 0:
+                elegido = 0
+            elif falt_S > 0:
+                elegido = 2
 
-            if elegir == "practica":
-                min_hechos_practica += BLOQUE
-                if min_hechos_practica > min_plan_practica:
-                    min_hechos_practica = min_plan_practica
-                asignado += BLOQUE
-                print("  30 min -> Sección PRÁCTICA (", min_hechos_practica, "/", min_plan_practica, ")")
-
-            elif elegir == "teoria":
-                min_hechos_teoria += BLOQUE
-                if min_hechos_teoria > min_plan_teoria:
-                    min_hechos_teoria = min_plan_teoria
-                asignado += BLOQUE
-                print("  30 min -> Sección TEORÍA (", min_hechos_teoria, "/", min_plan_teoria, ")")
-
-            elif elegir == "simulacro":
-                min_hechos_simulacro += BLOQUE
-                if min_hechos_simulacro > min_plan_simulacro:
-                    min_hechos_simulacro = min_plan_simulacro
-                asignado += BLOQUE
-                print("  30 min -> Sección SIMULACRO (", min_hechos_simulacro, "/", min_plan_simulacro, ")")
-
-            else:
+            if elegido == -1:
                 break
 
-            intentos = intentos + 1
+            # asignar bloque
+            min_hechos[elegido] += BLOQUE
+            if min_hechos[elegido] > min_plan[elegido]:
+                min_hechos[elegido] = min_plan[elegido]
+            asignado += BLOQUE
 
-        dia = dia + 1
+            print(f"  30 min -> {etiquetas[elegido]} ( {min_hechos[elegido]} / {min_plan[elegido]} )")
+
+            intentos += 1
 
 
 def calcular_indicadores_basico():
     """
-    Calcula indicadores de cumplimiento y horas, y define estado (listo/no_listo).
+    KPIs con sumas directas de listas.
     """
     global indicador_cumplimiento_pct, indicador_horas_efectivas, indicador_estado
 
-    min_plan_total = (min_plan_teoria + min_plan_practica + min_plan_simulacro)
-    min_hechos_total = (min_hechos_teoria + min_hechos_practica + min_hechos_simulacro)
+    min_plan_total = sum(min_plan)
+    min_hechos_total = sum(min_hechos)
 
     if min_plan_total == 0:
         indicador_cumplimiento_pct = 0.0
@@ -229,18 +185,14 @@ def calcular_indicadores_basico():
         indicador_cumplimiento_pct = (min_hechos_total * 100.0) / float(min_plan_total)
 
     indicador_horas_efectivas = min_hechos_total / 60.0
-
-    if indicador_cumplimiento_pct >= 80.0:
-        indicador_estado = "listo"
-    else:
-        indicador_estado = "no_listo"
+    indicador_estado = "listo" if indicador_cumplimiento_pct >= 80.0 else "no_listo"
 
     print("\n=== INDICADORES ===")
     print("Materia:", materia)
     print("Tipo:", tipo_curso)
     print("Días considerados:", dias_restantes, "| Carga diaria (min):", carga_diaria_min)
-    print("Min plan (T/P/S):", min_plan_teoria, "/", min_plan_practica, "/", min_plan_simulacro)
-    print("Min hechos (T/P/S):", min_hechos_teoria, "/", min_hechos_practica, "/", min_hechos_simulacro)
+    print("Min plan (T/P/S):", min_plan[0], "/", min_plan[1], "/", min_plan[2])
+    print("Min hechos (T/P/S):", min_hechos[0], "/", min_hechos[1], "/", min_hechos[2])
     print("Cumplimiento %:", round(indicador_cumplimiento_pct, 2))
     print("Horas efectivas:", round(indicador_horas_efectivas, 2))
     print("Estado:", indicador_estado)
@@ -248,49 +200,11 @@ def calcular_indicadores_basico():
 
 def reset_basico():
     """
-    Reinicia variables clave para poder correr otro escenario sin cerrar el programa.
+    Reset con listas (más corto).
     """
-    global min_hechos_teoria, min_hechos_practica, min_hechos_simulacro
-    global min_plan_teoria, min_plan_practica, min_plan_simulacro
     global indicador_cumplimiento_pct, indicador_horas_efectivas, indicador_estado
-
-    min_hechos_teoria = 0
-    min_hechos_practica = 0
-    min_hechos_simulacro = 0
-
-    min_plan_teoria = 0
-    min_plan_practica = 0
-    min_plan_simulacro = 0
-
+    min_plan[0] = min_plan[1] = min_plan[2] = 0
+    min_hechos[0] = min_hechos[1] = min_hechos[2] = 0
     indicador_cumplimiento_pct = 0.0
     indicador_horas_efectivas = 0.0
     indicador_estado = "no_listo"
-
-
-# -----------------------------
-# main
-# -----------------------------
-def main():
-    print("=== Asistente de Plan de Estudio (Básico) ===")
-    continuar = "s"
-
-    while continuar.lower() == "s":
-        reset_basico()
-        crear_plan_basico()
-        generar_secciones_basico()
-
-        print("\n--- Resumen del plan (minutos por sección) ---")
-        print("Teoría:", min_plan_teoria, " | Práctica:", min_plan_practica, " | Simulacro:", min_plan_simulacro)
-
-        print("\n--- Plan diario sugerido (sin fechas reales) ---")
-        imprimir_plan_diario_basico()
-
-        calcular_indicadores_basico()
-
-        continuar = input("\n¿Quieres generar otro plan? (s/n): ").strip()
-        if continuar == "":
-            continuar = "n"
-
-    print("\nGracias. Fin del asistente.")
-
-main()
