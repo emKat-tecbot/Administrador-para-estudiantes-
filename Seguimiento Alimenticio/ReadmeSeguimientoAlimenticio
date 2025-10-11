@@ -1,1 +1,84 @@
+Este proyecto es un organizador de comidas diario desarrollado en Python, que permite al usuario registrar los alimentos que consume durante el día y calcular automáticamente el total de macronutrientes ingeridos: proteínas, carbohidratos y grasas.
+Además, el programa compara los resultados con los objetivos nutricionales del usuario y muestra una evaluación general sobre si la dieta fue balanceada o si predominó algún macronutriente.
 
+Este proyecto integra variables, funciones, ciclos, decisiones y listas para almacenar los datos. En avances posteriores se planea guardar la información en archivos y generar un historial de días.
+
+Funcionamiento general
+
+El programa utiliza una estructura modular dividida en tres archivos:
+
+seguimiento.py → contiene todas las funciones principales del proyecto.
+
+menu.py → muestra el menú principal con las opciones disponibles.
+
+main.py → controla el flujo del programa y manda llamar las funciones según la opción elegida.
+
+El usuario puede:
+
+Ingresar sus objetivos diarios de proteínas, carbohidratos y grasas.
+
+Registrar sus comidas (por ejemplo, desayuno, comida, snack), indicando:
+
+qué equivale una porción,
+
+cuántas porciones comió,
+
+y cuántos gramos de cada macronutriente tiene.
+
+Ver los totales de nutrientes consumidos.
+
+Evaluar su dieta comparando el consumo con los objetivos del día.
+
+Ejecutar pruebas de ejemplo para verificar el correcto funcionamiento del código.
+
+Algoritmo general
+
+Mostrar menú principal.
+
+Si el usuario elige registrar comidas:
+
+Solicitar objetivos diarios (P, C, G).
+
+Registrar los datos de cada comida en una lista.
+
+Calcular totales recorriendo la lista con un ciclo for.
+
+Comparar los resultados contra los objetivos usando condicionales if / elif / else.
+
+Mostrar si cada macro está por debajo, en el objetivo o por encima.
+
+Determinar el tipo de dieta del día: alta en proteínas, carbohidratos, grasas o balanceada.
+
+Repetir el menú hasta que el usuario elija salir.
+
+Estructura de datos
+
+Cada comida se almacena como una lista con la siguiente forma:
+
+["nombre", "porcion", proteinas_consumidas, carbohidratos_consumidos, grasas_consumidas]
+
+
+Todas las comidas registradas se guardan dentro de una lista principal, por ejemplo:
+
+comidas = [
+    ["Desayuno", "2 huevos", 20, 0, 10],
+    ["Comida", "1 taza de arroz", 5, 45, 1],
+    ["Cena", "150 g de pollo", 30, 0, 5]
+]
+
+Funciones principales
+
+registrarComida(nombre)
+Solicita los datos de una comida (porción, macros, porciones consumidas) y devuelve una lista con los valores totales.
+
+mostrarComidas(comidas)
+Imprime en pantalla todas las comidas registradas con su información.
+
+calcularTotales(comidas)
+Recorre la lista principal y suma los valores de proteínas, carbohidratos y grasas.
+
+evaluarDieta(totales, objetivos)
+Compara los totales contra los objetivos y devuelve un resumen textual del resultado.
+
+pruebas()
+Ejecuta casos de ejemplo para verificar que las funciones trabajen correctamente.
