@@ -6,6 +6,9 @@ from administrador_de_tareas import menu
 from calculadora_de_callificaciones import calificacionMenu
 from organizador_de_horario import horario-menu
 from administrador_de_tareas import codigoTareas
+from Seguimiento_Alimenticio import SA
+from Seguimiento_Alimenticio_Menu import SAmenu
+
 def menu():
   print("==BIENVENIDO AL ADMINISTRADOR PARA ESTUDIANTES==")
   print( f'''
@@ -40,8 +43,9 @@ def main():
       else:
         break
   elif opcion == 2:
-    CodigoAvanceMacroComidas.main()
-    print()
+    print("\n=== SEGUIMIENTO ALIMENTICIO ===")
+    SAmenu.menu()  
+    SA.main()      
   elif opcion == 3:
     OrganizadorDeEstudio.iniciar()
   elif opcion == 4:
