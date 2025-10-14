@@ -1,14 +1,5 @@
 """
-Organizador de horarios (modo librería, sin I/O en funciones, excepto menú opcional)
-
-Reglas:
-- NO se elimina ninguna función previa; se quitaron prints/inputs internos.
-- Donde antes había input(), ahora se requieren datos por argumentos; si faltan, se lanza ValueError.
-- Donde antes había print(), ahora:
-   * retornan datos estructurados, o
-   * aceptan as_text=True para regresar una cadena formateada,
-   * por defecto no imprimen nada.
-- Se incluye un menú de ejemplo que SÍ imprime (para usar como UI externa).
+Organizador de horarios universitarios — Modo librería
 """
 
 from datetime import datetime, timedelta
@@ -35,6 +26,10 @@ ENERGIAS = {"BAJA", "MEDIA", "ALTA"}
 # ------------------------------ AYUDANTES ----------------------------------
 
 def normaliza_dia(entrada: str) -> str:
+    """
+    Normaliza el nombre de un día a uno válido del arreglo DIAS.
+    Si está vacío o es inválido, regresa 'Lunes'. Acepta 'miercoles' sin acento.
+    """
     if not entrada:
         return "Lunes"
     e = entrada.strip().capitalize()
@@ -45,18 +40,20 @@ def normaliza_dia(entrada: str) -> str:
     return e
 
 def indice_dia(dia: str) -> int:
+    """
+    Regresa el índice [0..4] del día dentro de DIAS.
+    """
     return DIAS.index(dia)
 
-# ========================== PRIMER AVANCE (DÍAS) ============================
+# ========================== (DÍAS) ============================
 
 def registrar_clases(entradas: Optional[list[dict]] = None) -> list[dict]:
     """
-    Antes: pedía por input(). Ahora: recibe 'entradas' como lista de dicts
-    [{"nombre": str, "horas_semanales": int}, ...]. Lanza ValueError si falta.
+    Crea la lista de materias a partir de 'entradas' con la forma:
+    [{"nombre": str, "horas_semanales": int}, ...]. Valida y normaliza campos.
     """
     if entradas is None:
         raise ValueError("registrar_clases requiere 'entradas' (lista de dicts).")
-    # normaliza tipos
     out = []
     for i, m in enumerate(entradas, 1):
         nombre = (m.get("nombre") or f"Materia_{i}").strip()
@@ -66,7 +63,8 @@ def registrar_clases(entradas: Optional[list[dict]] = None) -> list[dict]:
 
 def mostrar_clases(materias: list[dict], as_text: bool = False):
     """
-    Antes: imprimía. Ahora: devuelve lista de líneas o string si as_text=True.
+    Devuelve una representación en líneas del listado de materias.
+    Si 'as_text' es True, regresa una sola cadena unida por saltos de línea.
     """
     lines = ["--- Horario de Clases (crudo) ---"] if materias else ["No hay materias registradas."]
     for m in materias:
@@ -74,9 +72,16 @@ def mostrar_clases(materias: list[dict], as_text: bool = False):
     return "\n".join(lines) if as_text else lines
 
 def materias_a_tuplas(materias: list[dict]) -> list[tuple[str, int]]:
+    """
+    Convierte la lista de materias a una lista de tuplas (nombre, horas).
+    """
     return [(m["nombre"], int(m["horas_semanales"])) for m in materias]
 
 def acomodo_automatico_dias(materias: list[dict]) -> dict:
+    """
+    Distribuye materias por días (diccionario de listas) respetando MAX_CLASES_POR_DIA
+    e insertando descansos tras rachas de clases cuando hay espacio.
+    """
     dias = {"Lunes": [], "Martes": [], "Miércoles": [], "Jueves": [], "Viernes": []}
     horas_dia = {d: 0 for d in dias}
     i = 0
@@ -105,8 +110,8 @@ def acomodo_automatico_dias(materias: list[dict]) -> dict:
 
 def acomodo_manual_dias(materias: list[dict], asignaciones: Optional[list[tuple[str, str]]] = None) -> dict:
     """
-    Antes: preguntaba día por input(). Ahora: requiere asignaciones = lista de (materia, dia).
-    Si horas_semanales>1, repite esa materia ese # de veces en el día asignado (respetando límite).
+    Construye el diccionario por días a partir de asignaciones [(materia, dia)].
+    Repite la materia según sus horas_semanales, respetando MAX_CLASES_POR_DIA.
     """
     if asignaciones is None:
         raise ValueError("acomodo_manual_dias requiere 'asignaciones' [(materia, dia), ...].")
@@ -124,17 +129,27 @@ def acomodo_manual_dias(materias: list[dict], asignaciones: Optional[list[tuple[
     return dias
 
 def mostrar_acomodo(dias: dict, as_text: bool = False):
+    """
+    Devuelve la representación del horario por día. Si 'as_text' es True, regresa string.
+    """
     lines = ["--- Horario por día (vista original) ---"]
     for d in ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]:
         lines.append(f"{d}: {dias.get(d, [])}")
     return "\n".join(lines) if as_text else lines
 
-# ======================= NUEVO MÓDULO (MATRICES + TAREAS) ===================
+# ======================= MATRICES (CLASES + TAREAS) =========================
 
 def construir_matriz_vacia() -> list[list[str]]:
+    """
+    Construye una matriz semanal 5 x SLOTS_POR_DIA inicializada con LIBRE.
+    """
     return [[LIBRE for _ in range(SLOTS_POR_DIA)] for _ in range(len(DIAS))]
 
 def consecutivos_clases_al_final(fila: list[str]) -> int:
+    """
+    Cuenta cuántas clases consecutivas hay al final de una fila de la matriz.
+    Ignora LIBRE, DESCANSO y celdas de TAREA.
+    """
     count = 0
     for celda in reversed(fila):
         if celda in (LIBRE, DESCANSO) or str(celda).startswith("TAREA:"):
@@ -143,9 +158,15 @@ def consecutivos_clases_al_final(fila: list[str]) -> int:
     return count
 
 def contar_clases_en_dia(fila: list[str]) -> int:
+    """
+    Cuenta las celdas de clase en una fila (excluye LIBRE, DESCANSO y TAREAS).
+    """
     return sum(1 for c in fila if c not in (LIBRE, DESCANSO) and not str(c).startswith("TAREA:"))
 
 def imprimir_matriz(matriz: list[list[str]], titulo: str = "Matriz semanal", as_text: bool = False):
+    """
+    Genera una representación tabular de la matriz semanal. Si 'as_text' es True, regresa string.
+    """
     header = "Slot | " + " | ".join([f"{i:02d}" for i in range(SLOTS_POR_DIA)])
     lines = [f"--- {titulo} ---", header, "-" * len(header)]
     for d_idx, dia in enumerate(DIAS):
@@ -155,6 +176,9 @@ def imprimir_matriz(matriz: list[list[str]], titulo: str = "Matriz semanal", as_
     return "\n".join(lines) if as_text else lines
 
 def acomodo_automatico_matriz(materias: list[dict]) -> list[list[str]]:
+    """
+    Distribuye clases automáticamente en una matriz semanal respetando límites y descansos.
+    """
     matriz = construir_matriz_vacia()
     dia_idx = 0
     for m in materias:
@@ -172,8 +196,8 @@ def acomodo_automatico_matriz(materias: list[dict]) -> list[list[str]]:
 
 def acomodo_manual_matriz(materias: list[dict], colocaciones: Optional[list[tuple[str, str, int]]] = None) -> list[list[str]]:
     """
-    Antes: pedía día/slot por input. Ahora: colocaciones=[(materia, dia, slots_a_colocar_por_semana)]
-    Rellena slots LIBRE en el día dado para esa materia (respetando MAX_CLASES_POR_DIA).
+    Coloca manualmente clases en la matriz a partir de colocaciones [(materia, dia, nslots)].
+    Usa el primer slot LIBRE disponible en el día y respeta MAX_CLASES_POR_DIA.
     """
     if colocaciones is None:
         raise ValueError("acomodo_manual_matriz requiere 'colocaciones' [(materia, dia, nslots), ...].")
@@ -189,15 +213,23 @@ def acomodo_manual_matriz(materias: list[dict], colocaciones: Optional[list[tupl
                 puestos += 1
     return matriz
 
-# ======================= TAREAS AVANZADAS (NUEVO) ==========================
+# ======================= TAREAS AVANZADAS ==================================
 
 __task_seq = 0
+
 def _gen_tarea_id() -> str:
+    """
+    Genera un identificador simple y único para tareas.
+    """
     global __task_seq
     __task_seq += 1
     return f"T{int(datetime.now().timestamp())}{__task_seq}"
 
 def score_tarea(t: dict, modo: str = "mixta") -> float:
+    """
+    Calcula un score de ordenamiento según política: 'deadline', 'prioridad' o 'mixta'.
+    Combina urgencia, prioridad y dificultad.
+    """
     horas_restantes = (t["deadline"] - datetime.now()).total_seconds() / 3600.0
     urgencia = max(0.0, 1_000.0 / (1.0 + horas_restantes))
     prioridad = float(t.get("prioridad", 3))
@@ -209,28 +241,47 @@ def score_tarea(t: dict, modo: str = "mixta") -> float:
     return W_DEADLINE * urgencia + W_PRIORIDAD * prioridad + W_DIFICULTAD * dificultad
 
 def validar_dependencias(tareas: list[dict]) -> bool:
+    """
+    Verifica que el grafo de dependencias de tareas no contenga ciclos (DAG).
+    Ignora dependencias que no existan en la lista.
+    """
     grafo = {t["id"]: set(t.get("deps", [])) for t in tareas}
     visit, stack = set(), set()
+
     def dfs(u: str) -> bool:
-        if u in stack: return False
-        if u in visit: return True
+        if u in stack:
+            return False
+        if u in visit:
+            return True
         stack.add(u)
         for v in grafo.get(u, []):
-            if v not in grafo:  # dependencia inexistente, se ignora
+            if v not in grafo:
                 continue
-            if not dfs(v): return False
-        stack.remove(u); visit.add(u); return True
+            if not dfs(v):
+                return False
+        stack.remove(u)
+        visit.add(u)
+        return True
+
     return all(dfs(n) for n in grafo)
 
 def contar_tareas_en_dia(fila: list[str]) -> int:
+    """
+    Cuenta cuántos bloques de TAREA hay en una fila de la matriz.
+    """
     return sum(1 for c in fila if isinstance(c, str) and c.startswith("TAREA:"))
 
 def encontrar_slot_para_tarea(fila: list[str], energia: str) -> Optional[int]:
+    """
+    Determina un slot LIBRE adecuado para una tarea en función de la energía,
+    evitando rachas largas de clases y respetando un límite blando por día.
+    """
     if contar_tareas_en_dia(fila) >= MAX_TAREAS_POR_DIA:
         return None
     indices_libres = [i for i, c in enumerate(fila) if c == LIBRE]
     if not indices_libres:
         return None
+
     penalizados = set()
     streak = 0
     for i, c in enumerate(fila):
@@ -240,6 +291,7 @@ def encontrar_slot_para_tarea(fila: list[str], energia: str) -> Optional[int]:
             if streak >= 3 and i < len(fila) and fila[i] == LIBRE:
                 penalizados.add(i)
             streak = 0
+
     candidatos = [i for i in indices_libres if i not in penalizados] or indices_libres
     energia = energia.upper()
     if energia == "ALTA":
@@ -249,7 +301,11 @@ def encontrar_slot_para_tarea(fila: list[str], energia: str) -> Optional[int]:
     return candidatos[len(candidatos)//2]
 
 def bloques_necesarios(horas_estimadas: int, bloque_slots: int) -> int:
-    if bloque_slots <= 0: bloque_slots = 1
+    """
+    Calcula la cantidad de bloques a calendarizar dados 'horas_estimadas' y 'bloque_slots'.
+    """
+    if bloque_slots <= 0:
+        bloque_slots = 1
     total_slots = horas_estimadas
     n_bloques = (total_slots + bloque_slots - 1) // bloque_slots
     return max(1, n_bloques)
@@ -268,14 +324,17 @@ def registrar_tarea_calendario(
     bloque_slots: int = 1
 ) -> dict:
     """
-    Antes: pedía todo por input(). Ahora: requiere parámetros. Lanza ValueError si falta alguno clave.
+    Crea y devuelve el diccionario de una tarea con metadatos avanzados.
+    Requiere: titulo, materia, horas_estimadas y deadline.
     """
     if titulo is None or materia is None or horas_estimadas is None or deadline is None:
         raise ValueError("registrar_tarea_calendario requiere titulo, materia, horas_estimadas, deadline.")
     tipo = (tipo or "TAREA").upper()
-    if tipo not in TIPOS_TAREA: tipo = "TAREA"
+    if tipo not in TIPOS_TAREA:
+        tipo = "TAREA"
     energia = (energia or "MEDIA").upper()
-    if energia not in ENERGIAS: energia = "MEDIA"
+    if energia not in ENERGIAS:
+        energia = "MEDIA"
     deps = deps or []
     recurrente = [d for d in (recurrente or []) if d in DIAS]
     return {
@@ -294,6 +353,9 @@ def registrar_tarea_calendario(
     }
 
 def expandir_recurrentes(tareas: list[dict]) -> list[dict]:
+    """
+    Expande tareas recurrentes generando copias ancladas a los días especificados para la semana actual.
+    """
     extendidas = []
     now = datetime.now()
     for t in tareas:
@@ -303,13 +365,18 @@ def expandir_recurrentes(tareas: list[dict]) -> list[dict]:
                 dd_idx = indice_dia(d)
                 delta = (dd_idx - now.weekday()) % 7
                 nuevo_dl = datetime(now.year, now.month, now.day, base_time.hour, base_time.minute) + timedelta(days=delta)
-                clon = dict(t); clon["id"] = f"{t['id']}@{d}"; clon["deadline"] = nuevo_dl
+                clon = dict(t)
+                clon["id"] = f"{t['id']}@{d}"
+                clon["deadline"] = nuevo_dl
                 extendidas.append(clon)
         else:
             extendidas.append(t)
     return extendidas
 
 def marcar_dependencias_pendientes(tareas: list[dict], completadas_ids: set[str]) -> None:
+    """
+    Señala en cada tarea si tiene dependencias pendientes de cumplir (campo booleano '_deps_pend').
+    """
     for t in tareas:
         deps = set(t.get("deps", []))
         t["_deps_pend"] = not deps.issubset(completadas_ids)
@@ -320,6 +387,10 @@ def generar_calendario_tareas(
     politica: str = "mixta",
     completadas_ids: Optional[set[str]] = None
 ) -> list[list[str]]:
+    """
+    Inserta bloques de tareas en una copia de la matriz de clases según la política de priorización
+    y restricciones de energía, rachas, contigüidad y límites por día. Devuelve la matriz combinada.
+    """
     combinado = deepcopy(matriz_clases)
     if not tareas:
         return combinado
@@ -328,7 +399,7 @@ def generar_calendario_tareas(
         completadas_ids = set()
 
     if not validar_dependencias(tareas):
-        # no imprime; marca internamente si hubiera un ciclo (caller puede decidir qué hacer)
+        # El consumidor puede verificar dependencias aparte si lo necesita.
         pass
     marcar_dependencias_pendientes(tareas, completadas_ids)
 
@@ -339,7 +410,7 @@ def generar_calendario_tareas(
 
     for t in tareas_ordenadas:
         if t["_deps_pend"]:
-            # caller puede checar t["_deps_pend"] para notificar
+            t["_slots_pendientes"] = t.get("_slots_pendientes", t["horas_estimadas"])
             continue
 
         horas = int(t["horas_estimadas"])
@@ -354,25 +425,33 @@ def generar_calendario_tareas(
 
         for _ in range(3):
             for d in orden_dias:
-                if bloques_colocados >= n_bloques: break
+                if bloques_colocados >= n_bloques:
+                    break
                 fila = combinado[d]
                 pos = encontrar_slot_para_tarea(fila, energia)
-                if pos is None: continue
-                if pos + bloque > SLOTS_POR_DIA: continue
-                if any(fila[pos + k] != LIBRE for k in range(bloque)): continue
+                if pos is None:
+                    continue
+                if pos + bloque > SLOTS_POR_DIA:
+                    continue
+                if any(fila[pos + k] != LIBRE for k in range(bloque)):
+                    continue
                 etiqueta = f"TAREA: {t['titulo']} ({t['materia']})"
                 for k in range(bloque):
                     fila[pos + k] = etiqueta
                 bloques_colocados += 1
-            if bloques_colocados >= n_bloques: break
+            if bloques_colocados >= n_bloques:
+                break
 
         faltan_slots = max(0, n_bloques - bloques_colocados) * bloque
-        t["_slots_pendientes"] = faltan_slots  # caller decide qué hacer
+        t["_slots_pendientes"] = faltan_slots
     return combinado
 
 # =========================== REPORTES Y UTILIDADES ==========================
 
 def reporte_carga(matriz: list[list[str]]) -> dict:
+    """
+    Calcula el número de clases, tareas y slots libres por día.
+    """
     resumen = {}
     for d_idx, dia in enumerate(DIAS):
         fila = matriz[d_idx]
@@ -383,6 +462,9 @@ def reporte_carga(matriz: list[list[str]]) -> dict:
     return resumen
 
 def imprimir_reporte_carga(matriz: list[list[str]], as_text: bool = False):
+    """
+    Devuelve un reporte formateado de carga semanal (clases/tareas/libres) por día.
+    """
     r = reporte_carga(matriz)
     lines = ["--- Carga semanal (clases/tareas/libres) ---"]
     for dia in DIAS:
@@ -391,6 +473,9 @@ def imprimir_reporte_carga(matriz: list[list[str]], as_text: bool = False):
     return "\n".join(lines) if as_text else lines
 
 def listar_proximas_y_atrasadas(tareas: list[dict], horas: int = 72, as_text: bool = False):
+    """
+    Lista tareas próximas (dentro de 'horas') y atrasadas, ordenadas por deadline.
+    """
     ahora = datetime.now()
     lines = ["--- Tareas próximas y atrasadas ---"]
     for t in sorted(tareas, key=lambda x: x["deadline"]):
@@ -402,6 +487,9 @@ def listar_proximas_y_atrasadas(tareas: list[dict], horas: int = 72, as_text: bo
     return "\n".join(lines) if as_text else lines
 
 def guardar_estado(path: str, materias: list[dict], matriz: list[list[str]], tareas: list[dict], quiet: bool = True) -> None:
+    """
+    Guarda materias, matriz y tareas en un archivo JSON en 'path'.
+    """
     serial = {
         "materias": materias,
         "matriz": matriz,
@@ -412,9 +500,11 @@ def guardar_estado(path: str, materias: list[dict], matriz: list[list[str]], tar
     }
     with open(path, "w", encoding="utf-8") as f:
         json.dump(serial, f, ensure_ascii=False, indent=2)
-    # quiet=True no imprime
 
 def cargar_estado(path: str) -> tuple[list[dict], list[list[str]], list[dict]]:
+    """
+    Carga materias, matriz y tareas desde un archivo JSON en 'path'.
+    """
     with open(path, "r", encoding="utf-8") as f:
         data = json.load(f)
     materias = data.get("materias", [])
@@ -423,3 +513,4 @@ def cargar_estado(path: str) -> tuple[list[dict], list[list[str]], list[dict]]:
     for t in tareas:
         t["deadline"] = datetime.strptime(t["deadline"], "%Y-%m-%d %H:%M")
     return materias, matriz, tareas
+
