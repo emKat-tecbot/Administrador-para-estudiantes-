@@ -1,9 +1,8 @@
-# =============================== MENÚ ================================
-def imprimir_menu() -> None:
+def menu():
     print("\n=== ORGANIZADOR UNIVERSITARIO ===")
     print("1) Registrar/Mostrar materias")
     print("2) Acomodo clases (auto/manual)")
     print("3) Registrar/Mostrar tareas")
-    print("4) Calendarizar (policy deadline/prioridad/mixta)")
+    print("4) Calendarizar (clases + tareas)")
     print("5) Reportes y Guardar/Cargar")
     print("0) Salir")
