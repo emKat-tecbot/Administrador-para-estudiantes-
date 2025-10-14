@@ -301,17 +301,6 @@ def cargar_estado(path: str) -> tuple[list[dict], list[list[str]], list[dict]]:
     for t in tareas:
         t["deadline"] = datetime.strptime(t["deadline"], "%Y-%m-%d %H:%M")
     return materias, matriz, tareas
-
-def menu() -> None:
-    """Muestra el menú principal del organizador."""
-    print("\n=== ORGANIZADOR UNIVERSITARIO ===")
-    print("1) Registrar/Mostrar materias")
-    print("2) Acomodo clases (auto/manual)")
-    print("3) Registrar/Mostrar tareas")
-    print("4) Calendarizar (clases + tareas)")
-    print("5) Reportes y Guardar/Cargar")
-    print("0) Salir")
-
 # ------------------------------ MAIN ---------------------------------------
 
 def main():
@@ -363,7 +352,5 @@ def main():
             break
 
         else:
-            print("Opción inválida. Intenta nuevamente.")
-
-if __name__ == "__main__":
-    main()
+            print("Opción inválida. Intenta nuevamente.") 
+main()
