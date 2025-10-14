@@ -1,5 +1,5 @@
-def menu():
-    
+# =============================== MENÚ ================================
+def imprimir_menu() -> None:
     print("\n=== ORGANIZADOR UNIVERSITARIO ===")
     print("1) Registrar/Mostrar materias")
     print("2) Acomodo clases (auto/manual)")
