@@ -1,8 +1,11 @@
-def menu():
-    print("\n=== ORGANIZADOR UNIVERSITARIO ===")
-    print("1) Registrar/Mostrar materias")
-    print("2) Acomodo clases (auto/manual)")
-    print("3) Registrar/Mostrar tareas")
-    print("4) Calendarizar (clases + tareas)")
-    print("5) Reportes y Guardar/Cargar")
+def menu() -> str:
+    print("\n===== ORGANIZADOR DE HORARIOS (CLI opcional) =====")
+    print("1) Registrar materias (ejemplo)")
+    print("2) Generar matriz de clases automática")
+    print("3) Registrar tareas (ejemplo)")
+    print("4) Generar calendario combinado")
+    print("5) Reporte y guardar estado")
+    print("6) Cargar estado desde archivo")
+    print("7) Exportar matriz a TXT")
     print("0) Salir")
+    return input("Selecciona una opción: ")
