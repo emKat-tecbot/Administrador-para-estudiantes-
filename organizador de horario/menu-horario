@@ -1,4 +1,4 @@
-def menu() -> str:
+def menu():
     print("\n===== ORGANIZADOR DE HORARIOS (CLI opcional) =====")
     print("1) Registrar materias (ejemplo)")
     print("2) Generar matriz de clases automática")
