@@ -1,4 +1,4 @@
-# Organizador de Horarios Universitarios — Módulo Integrado
+# Organizador de Horarios Universitarios 
 from __future__ import annotations
 from datetime import datetime
 from copy import deepcopy
