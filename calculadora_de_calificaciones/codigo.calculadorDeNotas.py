@@ -1,5 +1,4 @@
 def calPorClase(): # calificacion promedio por clase
-    print("Entra a funci[on 1]")
     n = ""
     calProm = 0
     pesoProm = 0
@@ -135,37 +134,3 @@ Caso 2:
 Salida: "", "16h y 42min"
 
 '''
-
-def menu():
-    print("==BIENVENIDO AL ADMINISTRADOR DE NOTAS==")
-    print("1. Calificacion pormedio por clase")
-    print("2. Que nota necesito para pasar?")
-    print("3. Progreso de mis notas")
-    print("4. Tiempo de estudio para el examen final")
-    print("5. Salir ")
-
-def main():
-    menu()
-    opcion = 0
-    while opcion != 5:
-        opcion = int(input("Selecciona una opcion (1-5): "))
-        if opcion == 1:
-            final = calPorClase()
-            print("Tu calificacion final es: ", final)
-            break
-        elif opcion == 2:
-            minimo = qNNPP(final)
-            print("La calificacion minima que necesitas es: ", minimo)
-        elif opcion == 3:
-            porgresoDeNota()
-        elif opcion == 4:
-            tiempoDeEstudio(final,minimo)
-        elif opcion == 5:
-            print("Gracias, adios :D")
-            break
-        else:
-            print("Opcion no valida, intenta de nuevo")
-            menu()
-
-# main()    
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
