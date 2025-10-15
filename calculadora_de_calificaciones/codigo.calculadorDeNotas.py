@@ -14,7 +14,7 @@ def calPorClase(): # calificacion promedio por clase
             final = calProm/pesoProm # formula de calificacion final 
             break
     print("su nota promedio es: ", final)
-    return [final,,nombreDeClass,peso]
+    return [final,nombreDeClass,pesoProm]
 '''  
 CASOS DE PRUEBA:
 
@@ -108,16 +108,16 @@ def tiempoDeEstudio(entrada, entrada2): #nos cuenta que tanto debes estudiar par
 
 #  grade spreadsheet (class, grade, goal grade, priority) 
 def baseDeDatosdeNotas(clase, nota, meta, prioridad):
-    baseDeDatos = [["Clase","Nota","Promedio", "Meta", "Prioridad"]]
-    for i in range (1,4):
+    baseDeDatos = [["Clase","Nota", "Meta", "Prioridad"]]
+    for i in range (1,len(clase)):
          if prioridad in [1,2,3]:
             prioridad = "Baja"
          elif prioridad in [4,5,6,7]:
              prioridad = "Media"
          elif prioridad in [8,9,10]:
              prioridad = "Alta"
-         for j in range (len(clase)):
-            baseDeDatos[i].append(clase[j],nota[j],meta[j],prioridad[j])
+         for j in range (4):
+            baseDeDatos.append([clase[j],nota[j],meta[j],prioridad[j]])
     return baseDeDatos
 baseDeDatosdeNotas(["Matematica","Quimica","Sociales"],[85,90,78],[90,95,100],[9,7,5])
 #GPA converter
@@ -154,6 +154,6 @@ def menu ():
   3. ¿Qué tanto he progresado con esta nota?
   4. Plan de estudio
   ''')
-  calcOpt = int(imput("Que quisieras hacer? "))
+  calcOpt = int(input("Que quisieras hacer? "))
   return calcOpt
   
