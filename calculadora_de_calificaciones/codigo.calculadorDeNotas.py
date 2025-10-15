@@ -1,7 +1,9 @@
+#modo estudiante
 def calPorClase(): # calificacion promedio por clase
     n = ""
     calProm = 0
     pesoProm = 0
+    nombreDeClass = input("Cuales es el nombre de la materia? ")
     while n != "no":
         nota = float(input("Ingresa una nota de tu clase de este periodo/semestre: "))
         peso = float(input("How much is it worth? "))
@@ -12,7 +14,7 @@ def calPorClase(): # calificacion promedio por clase
             final = calProm/pesoProm # formula de calificacion final 
             break
     print("su nota promedio es: ", final)
-    return final
+    return [final,,nombreDeClass,peso]
 '''  
 CASOS DE PRUEBA:
 
@@ -32,8 +34,8 @@ Entrada:
     Nota 4: 53, 60
 Salida = 62.6
 '''
-def qNNPP (entrada): # que nota necesitare para pasar 
-    final = entrada
+def qNNPP (final): # que nota necesitare para pasar 
+    final = final
     objetivo = float(input("Que nota quieres lograr este periodo/semestre "))
     peso = float(input("Que porcentaje vale el examen final? "))
     minimo = (objetivo - final * (100 -peso))/ peso # formula para la nota minima para alcanzar meta
@@ -102,23 +104,25 @@ def tiempoDeEstudio(entrada, entrada2): #nos cuenta que tanto debes estudiar par
         print("Deberias ponerle un buen tiempo a estudiar para el examen final")
     elif gap < 15: 
         print("Ok alerta roja, la hora de estudiar es ahora")
-# calculo de plan de estudio
-    print("Hagamos un plan de estudio ")
-    dias = int(input("Cuantos dias faltan para el examen? "))
-    for dia in range (1, dias + 1):
-        horas = gap / dias
-        if horas < 1: # si tienes menos de una hora para estudiar
-            min = horas * 60 
-            print("Dia %d: %d minutos" %(dia,min))
-        if horas >= 1 and type(horas) == float: # si el tiempo esta en horas y minutos
-            # separar horas y minutos
-            h = gap // dias 
-            min = (horas - h) * 60
-            print("Dia %d: %d horas y %d minutos" %(dia,h, min))
-        if horas >= 1 and type(horas) == int: # si el tiempo esta en solo horas
-            print("Dia %d: %d horas" %(dia,horas))
-        if horas == 0: # si no necesitas estudiar
-            print("Exito! no necesitas estudiar para el examen")
+
+
+#  grade spreadsheet (class, grade, goal grade, priority) 
+def baseDeDatosdeNotas(clase, nota, meta, prioridad):
+    baseDeDatos = [["Clase","Nota","Promedio", "Meta", "Prioridad"]]
+    for i in range (1,4):
+         if prioridad in [1,2,3]:
+            prioridad = "Baja"
+         elif prioridad in [4,5,6,7]:
+             prioridad = "Media"
+         elif prioridad in [8,9,10]:
+             prioridad = "Alta"
+         for j in range (len(clase)):
+            baseDeDatos[i].append(clase[j],nota[j],meta[j],prioridad[j])
+    return baseDeDatos
+baseDeDatosdeNotas(["Matematica","Quimica","Sociales"],[85,90,78],[90,95,100],[9,7,5])
+#GPA converter
+
+# study planner calendar (day (goes untill the day of the exam), hours available, topics to study, priority of topic (based on dificulty of topic))
 '''
 CASOS DE PRUEBA:
 
@@ -134,3 +138,22 @@ Caso 2:
 Salida: "", "16h y 42min"
 
 '''
+#modo profesor
+
+#funcion 1. crear matriz de nota estudiantil
+
+#funcion 2 matriz por rubrica
+
+#fubcion 3 estadistica en general (max, min)
+
+#funcion 4 progreso de nota por estudiante (si esta mejorandom, en que competencias)
+def menu ():
+  print(f'''
+  1. Caificaion por clase
+  2. ¿Qué nota necesito para pasar?
+  3. ¿Qué tanto he progresado con esta nota?
+  4. Plan de estudio
+  ''')
+  calcOpt = int(imput("Que quisieras hacer? "))
+  return calcOpt
+  
