@@ -1,5 +1,5 @@
-def menu():
-    print("\n===== ORGANIZADOR DE HORARIOS (CLI opcional) =====")
+def menu() -> str:
+    print("===== ORGANIZADOR DE HORARIOS (CLI opcional) =====")
     print("1) Registrar materias (ejemplo)")
     print("2) Generar matriz de clases automática")
     print("3) Registrar tareas (ejemplo)")
@@ -8,4 +8,4 @@ def menu():
     print("6) Cargar estado desde archivo")
     print("7) Exportar matriz a TXT")
     print("0) Salir")
-    return input("Selecciona una opción: ")
+    return input("Selecciona una opción: ").strip()
