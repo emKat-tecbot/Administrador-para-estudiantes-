@@ -1,4 +1,4 @@
-#modo estudiante
+import random
 def calPorClase(): # calificacion promedio por clase
     n = ""
     calProm = 0
@@ -105,48 +105,53 @@ def tiempoDeEstudio(entrada, entrada2): #nos cuenta que tanto debes estudiar par
     elif gap < 15: 
         print("Ok alerta roja, la hora de estudiar es ahora")
 
-
-#  grade spreadsheet (class, grade, goal grade, priority) 
 def baseDeDatosdeNotas(clase, nota, meta, prioridad):
     baseDeDatos = [["Clase","Nota", "Meta", "Prioridad"]]
-    for i in range (1,len(clase)):
-         if prioridad in [1,2,3]:
-            prioridad = "Baja"
-         elif prioridad in [4,5,6,7]:
-             prioridad = "Media"
-         elif prioridad in [8,9,10]:
-             prioridad = "Alta"
-         for j in range (4):
-            baseDeDatos.append([clase[j],nota[j],meta[j],prioridad[j]])
-    return baseDeDatos
-baseDeDatosdeNotas(["Matematica","Quimica","Sociales"],[85,90,78],[90,95,100],[9,7,5])
-#GPA converter
+    for i in range (len(clase)):
+        if prioridad[i]in [1,2,3]:
+         prioridad[i]= "Baja"
+        elif prioridad[i] in [4,5,6,7]:
+         prioridad[i] = "Media"
+        elif prioridad[i] in [8,9,10]:
+         prioridad[i] = "Alta"
+        baseDeDatos.append([clase[i],nota[i],meta[i],prioridad[i]])
+    
+    for columnas in range(len(baseDeDatos)):
+        for filas in range (len(baseDeDatos[columnas])):
+           print(baseDeDatos[columnas][filas], end = "-------")
+        print("\n")
 
 # study planner calendar (day (goes untill the day of the exam), hours available, topics to study, priority of topic (based on dificulty of topic))
-'''
-CASOS DE PRUEBA:
+def calendario ( temas, horasLibres, dificultad, hoy, fechaExamen):
+    dias = fechaExamen - hoy
+    temasRep = []
+    calendario = [["Dia","Horas a estudiar","Temas a estudiar","Topico de enfoque"]]
+    for i in range (len(temas)):
+        temasRep.extend(temas * dificultad[i])
+                        
+    temasDeHoy = []
+    for a in range (len(temasRep)):
+        for b in range (min(3,len(temasRep))):
+            tema = random.choice(temasRep) 
+            temasDeHoy[b].append(tema)
+        for i in range (1, dias + 1):
+            for j in range (len(horasLibres)):
+                calendario.append([j + 1,horasLibres[j],temasDeHoy[j]])
+    print(calendario)
 
-Caso 1:
-Entrada:
-    Nota promedio: 84.1\
-    Calificacion necesaria para pasar la final:99.8
-Salida: "", "15 h  y 42 min"
 
-Caso 2:
-    Nota promedio: 62.6
-    Calificacion necesaria para pasar la final: 79.3
-Salida: "", "16h y 42min"
+def Archivo (baseDeDatosdeNotas,calendario):
+    baseDeDatos = open("ArchivoDeTexto.txt","+w")
+    baseDeDatos.write(baseDeDatosdeNotas)
+    baseDeDatos.write("\n")
+    baseDeDatos.write("Tabla 2. Calendario de estudio")
+    baseDeDatos.write("\n")
+    baseDeDatos.write(calendario)
+    baseDeDatos.seek(0)
+    baseDeDatos.read()
+Archivo(baseDeDatosdeNotas(["Matematica","Quimica","Sociales"],[85,90,78],[90,95,100],[9,7,5]),calendario(["Algebra","Trigonometria","Calculo"],[3,2,4],[3,2,5],1,7))
 
-'''
-#modo profesor
 
-#funcion 1. crear matriz de nota estudiantil
-
-#funcion 2 matriz por rubrica
-
-#fubcion 3 estadistica en general (max, min)
-
-#funcion 4 progreso de nota por estudiante (si esta mejorandom, en que competencias)
 def menu ():
   print(f'''
   1. Caificaion por clase
