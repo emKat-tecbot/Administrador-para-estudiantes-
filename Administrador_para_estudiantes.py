@@ -1,12 +1,14 @@
-from calculadora_de_callificaciones import calculadorDeNotas
+from calculadora_de_calificaciones import codigo_calculadorDeNotas
 from Organizador_de_estudio import Organizador_de_Estudio
 from organizador_de_horario import Codigo
 from administrador_de_tareas import menu
-from calculadora_de_callificaciones import calificacionMenu
+from calculadora_de_calificaciones import calificacionMenu
 from organizador_de_horario import horario_menu
 from administrador_de_tareas import codigoTareas
 from Seguimiento_Alimenticio import Seguimiento_Alimenticio
 from Seguimiento_Alimenticio import Seguimiento_Alimenticio_Menu
+from datetime import datetime
+from organizador_horario_universitario import *
 
 def menu():
   print("==BIENVENIDO AL ADMINISTRADOR PARA ESTUDIANTES==")
@@ -29,18 +31,43 @@ def main():
       print("La opcion no esta en el menu intenta de nuevo por favor.")
   if opcion == 1:
     while True:
-      calificacionMenu.menu()
-      optCal = calificacionMenu.menu()
+      codigo_calculadorDeNotas.menu()
+      optCal = codigo_calculadorDeNotas.menu()
       if optCal == 1:
-        final = calculadorDeNotas.calPorClase()
+        final = codigo_calculadorDeNotas.calPorClase()
+        print(final)
       elif optCal == 2: 
-        qNNPP = calculadorDeNotas.qNNPP(final)
+        qNNPP = codigo_calculadorDeNotas.qNNPP(final[0])
+        print(qNNPP[0])
       elif optCal == 3:
-        calculadorDeNotas.porgresoDeNota ()
+        codigo_calculadorDeNotas.porgresoDeNota ()
       elif optCal == 4:
-        calculadorDeNotas.tiempoDeEstudio(final,qNNPP)
-      else:
-          break
+        nmaterias = int(input("Por curiosidad, cuantas materias quisieras poner en tu base de Datos? "))
+        i = 0
+        j = 0
+        lista = []
+        cont = 0
+        dificultad = " "
+        prioridad = []
+        clase = []
+        nota = []
+        meta = []
+        while i < len(final[0]):
+          while j < len (final[0]):
+            clase.append( final [i])
+            nota.append(final[i + 1])
+            meta.append(qNNPP[1])
+            while type(dificultad) == str:
+              dificultad = int(input("En la escala del 1 al 10, que tan dificil es tu clase? "))
+              if type(dificultad) == str and dificultad < 1 or dificultad > 10:
+                print("ERROR: respuesta no valida")
+              if type(dificultad) == int and dificultad in [1,2,3,4,5,6,7,8,9,10]:
+                prioridad.append(dificultad)
+                break
+            j += 1
+          i += 1
+          lista.append([clase,nota,meta,dificultad])
+        print(lista)   
   elif opcion == 2:
      print("\n=== SEGUIMIENTO ALIMENTICIO ===")
      Seguimiento_Alimenticio_Menu.menu()  
@@ -49,33 +76,59 @@ def main():
     OrganizadorDeEstudio.iniciar()
   elif opcion == 4:
     while True:
-      horario-menu.menu()
-      if op == 1:
-        funcion_registrar_clases.registrar_clases()
-      elif op== 2:
-        funcion_mostrar_clases.mostrar_clases(materias)
-      elif op== 3:
-        funcion_acomodo_automatico.acomodo_acomodo_automatico_dias(materias)
-      elif op== 4:
-        funcion_acomodo_manual.acomodo_manual_dias(materias)
-      elif op== 5:
-        funcion_mostrar_acomodo_dias.mostrar_acomodo(dias_ultimo)
-      elif op== 6:
-        funcion_acomodo_automatico_MATRIZ.acomodo_acomodo_automatico_matriz(materias)
-      elif op== 7:
-        funcion_acomodo_manual_MATRIZ.acomodo_manual_matriz(materias)
-      elif op== 8:
-        funcion:registrar_tarea.registrar_tarea_calendario()
-      elif op== 9:
-        funcion:mostrar_tareas.mostrar_tareas(tareas)
-      elif op== 10:
-        funcion:generar_calendario.generar_calendario_tareas(matriz_clases,tareas)
-      elif op== 11:
-        funcion:mostrar_calendario.mostrar_matriz_clases(matriz_clases)
-      elif op== 12:
+      opcion = menu()
+      if opcion == "1":
+        materias = registrar_clases([
+            {"nombre": "Física", "horas_semanales": 4},
+            {"nombre": "Cálculo", "horas_semanales": 3},
+            {"nombre": "Programación", "horas_semanales": 5}
+        ])
+      elif opcion == "2":
+        print(mostrar_clases(materias, as_text=True))
+      elif opcion == "3":
+        dias_automatico = acomodo_automatico_dias(materias)
+      elif opcion == "4":
+        asignaciones = [("Física", "Lunes"), ("Cálculo", "Martes")]
+        dias_manual = acomodo_manual_dias(materias, asignaciones)
+      elif opcion == "5":
+        print(mostrar_acomodo(dias_automatico, as_text=True))
+      elif opcion == "6":
+        matriz, texto_matriz = acomodo_automatico_matriz(materias, as_text=True)
+        print(texto_matriz)
+      elif opcion == "7":
+        matriz, texto_manual = acomodo_automatico_matriz(materias, as_text=True)
+        print(texto_manual)
+      elif opcion == "8":
+        tareas = [
+            registrar_tarea_calendario("Proyecto Final", "Programación", 3, datetime(2025,10,25))
+        ]
+      elif opcion == "9":
+        if tareas:
+            for t in tareas:
+                print(f"{t['titulo']} ({t['materia']}) - {t['horas_estimadas']}h - {t['deadline']}")
+        else:
+            print("No hay tareas registradas.")
+      elif opcion == "10":
+        combinado = generar_calendario_tareas(matriz, tareas)
+        print(imprimir_matriz(combinado, titulo="Calendario combinado", as_text=True))
+      elif opcion == "11":
+        print(imprimir_matriz(matriz, as_text=True))
+      elif opcion == "12":
+        reporte = imprimir_reporte_carga(matriz, as_text=True)
+        print(reporte)
+        guardar_estado("estado.json", materias, matriz, tareas)
+        print("Estado guardado.")
+      elif opcion == "13":
+        materias, matriz, tareas = cargar_estado("estado.json")
+        print("Estado cargado correctamente.")
+      elif opcion == "14":
+        exportar_txt("horario.txt", matriz)
+        print("Matriz exportada a horario.txt")
+      elif opcion == "0":
+        print("Saliendo...")
         break
-      else:
-        print("Opcion no valida intenta de nuevo")
+    else:
+        print("Opción no válida. Intenta de nuevo.")
         Codigo.main()
   elif opcion == 5:
     tareas = []
