@@ -7,4 +7,5 @@ te dejará marcar y ver las que tienes pendientes y las que ya completaste.
 Con esta herramienta los estudiantes podrán tener un mejor control sobre su agenda, planificar mejor y priorizar lo que deben hacer, de esta forma se promueve una mejor administración 
 del tiempo y se puede llegar a reducir el estrés que se acumula debido a la acumulación de tareas. 
 
+Funcionamiento general
 
