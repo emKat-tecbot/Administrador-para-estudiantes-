@@ -76,60 +76,61 @@ def main():
     OrganizadorDeEstudio.iniciar()
   elif opcion == 4:
     while True:
-      opcion = menu()
-      if opcion == "1":
+    opcion = menu()
+    if opcion == "1":
         materias = registrar_clases([
-            {"nombre": "Física", "horas_semanales": 4},
             {"nombre": "Cálculo", "horas_semanales": 3},
-            {"nombre": "Programación", "horas_semanales": 5}
+            {"nombre": "Física", "horas_semanales": 3},
+            {"nombre": "Programación", "horas_semanales": 4}
         ])
-      elif opcion == "2":
         print(mostrar_clases(materias, as_text=True))
-      elif opcion == "3":
-        dias_automatico = acomodo_automatico_dias(materias)
-      elif opcion == "4":
-        asignaciones = [("Física", "Lunes"), ("Cálculo", "Martes")]
-        dias_manual = acomodo_manual_dias(materias, asignaciones)
-      elif opcion == "5":
-        print(mostrar_acomodo(dias_automatico, as_text=True))
-      elif opcion == "6":
-        matriz, texto_matriz = acomodo_automatico_matriz(materias, as_text=True)
-        print(texto_matriz)
-      elif opcion == "7":
-        matriz, texto_manual = acomodo_automatico_matriz(materias, as_text=True)
-        print(texto_manual)
-      elif opcion == "8":
+
+    elif opcion == "2":
+        matriz_clases = acomodo_automatico_matriz(materias)
+        print(imprimir_matriz(matriz_clases, as_text=True))
+
+    elif opcion == "3":
         tareas = [
-            registrar_tarea_calendario("Proyecto Final", "Programación", 3, datetime(2025,10,25))
+            registrar_tarea_calendario(
+                "Hoja de Derivadas", "Cálculo", 3, datetime(2025, 10, 18, 23, 59),
+                tipo="TAREA", prioridad=4, dificultad=2, energia="MEDIA"
+            ),
+            registrar_tarea_calendario(
+                "Estudiar Newton", "Física", 2, datetime(2025, 10, 17, 20, 0),
+                tipo="ESTUDIO", prioridad=5, dificultad=2, energia="ALTA"
+            ),
+            registrar_tarea_calendario(
+                "Práctica listas", "Programación", 2, datetime(2025, 10, 19, 21, 0),
+                tipo="PROYECTO", prioridad=3, dificultad=3, energia="MEDIA"
+            )
         ]
-      elif opcion == "9":
-        if tareas:
-            for t in tareas:
-                print(f"{t['titulo']} ({t['materia']}) - {t['horas_estimadas']}h - {t['deadline']}")
-        else:
-            print("No hay tareas registradas.")
-      elif opcion == "10":
-        combinado = generar_calendario_tareas(matriz, tareas)
-        print(imprimir_matriz(combinado, titulo="Calendario combinado", as_text=True))
-      elif opcion == "11":
-        print(imprimir_matriz(matriz, as_text=True))
-      elif opcion == "12":
-        reporte = imprimir_reporte_carga(matriz, as_text=True)
-        print(reporte)
-        guardar_estado("estado.json", materias, matriz, tareas)
-        print("Estado guardado.")
-      elif opcion == "13":
-        materias, matriz, tareas = cargar_estado("estado.json")
-        print("Estado cargado correctamente.")
-      elif opcion == "14":
-        exportar_txt("horario.txt", matriz)
-        print("Matriz exportada a horario.txt")
-      elif opcion == "0":
-        print("Saliendo...")
+
+    elif opcion == "4":
+        calendario = generar_calendario_tareas(
+            matriz_clases, ordenar_tareas_por_deadline(tareas)
+        )
+        print(imprimir_matriz(calendario, "Calendario combinado", as_text=True))
+
+    elif opcion == "5":
+        print(imprimir_reporte_carga(calendario, as_text=True))
+        guardar_estado("estado.json", materias, calendario, tareas)
+        print("Estado guardado en 'estado.json'.")
+
+    elif opcion == "6":
+        materias, matriz_clases, tareas = cargar_estado("estado.json")
+        print("Estado cargado.")
+
+    elif opcion == "7":
+        exportar_txt("matriz.txt", matriz_clases)
+        print("Matriz exportada a 'matriz.txt'.")
+
+    elif opcion == "0":
+        print("Saliendo del programa...")
         break
+
     else:
-        print("Opción no válida. Intenta de nuevo.")
-        Codigo.main()
+        print("Opción inválida. Intenta nuevamente.")
+    Codigo.main()
   elif opcion == 5:
     tareas = []
     while True:
