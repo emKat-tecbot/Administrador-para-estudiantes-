@@ -906,3 +906,17 @@ def exportar_txt(path: str, matriz: list[list[str]]) -> None:
         else:
             for line in texto:
                 f.write(str(line) + "\n")
+"""
+Funcion Menu
+"""
+def menu() -> str:
+    print("===== ORGANIZADOR DE HORARIOS =====")
+    print("1) Registrar materias ")
+    print("2) Generar matriz de clases automática")
+    print("3) Registrar tareas ")
+    print("4) Generar calendario combinado")
+    print("5) Reporte y guardar estado")
+    print("6) Cargar estado desde archivo")
+    print("7) Exportar matriz a TXT")
+    print("0) Salir")
+    return input("Selecciona una opción: ").strip()
