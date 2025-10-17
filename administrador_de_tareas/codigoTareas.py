@@ -143,7 +143,7 @@ def eliminar_tarea(matriz_tareas):
 def menuTarea():
     matriz_tareas = [[], [], []]
     opcion = ""
-    while opcion != "6":
+    while opcion != "5":
         print("MENÚ")
         print("1. Agregar tareas")
         print("2. Ver tareas")
