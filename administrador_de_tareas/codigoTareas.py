@@ -1,83 +1,126 @@
-''' 
-Permite agregar tareas, verlas y marcar como completadas
-'''
-def agregar_tareas(tareas):
-    while True:
-        nombre = input("Escribe la nueva tarea: ")
-        if nombre == "":
-            print("No se puede agregar")
+"""
+Programa que permite agregar tareas, verlas, completarlas, 
+eliminarlas y ver estadísticas usando listas (matrices).
+"""
+
+"""
+Casos de prueba
+
+"""
+def agregar_tareas(matriz_tareas):
+    print("Categorías disponibles:")
+    print("1. Escuela")
+    print("2. Casa")
+    print("3. Personal")
+
+    repetir = "si"
+    while repetir == "si":
+        opcion = input("Selecciona una categoría: ")
+        if opcion == "1" or opcion == "2" or opcion == "3":
+            categoria = int(opcion) - 1
+            nombre = input("Escribe la tarea: ")
+            if nombre != "":
+                tarea = [nombre, "Pendiente"]   
+                matriz_tareas[categoria].append(tarea)
+                print("Tarea agregada.")
+            else:
+                print("No se puede agregar una tarea vacía")
         else:
-            tareas.append({"nombre": nombre, "estado": "Pendiente"})
-            print("Tarea agregada.")
-        otra = input("¿Deseas agregar otra tarea? Escribe 'si' o 'no': ")
-        if otra != "si":
-            break
-    return tareas
-'''
-Caso de prueba:
-Entrada: "tarea de programación", "si", "tarea de artes", "si", "practicar ejercicios mate", "no"
-Salida: Escribe la nueva tarea: tarea de programación
-Tarea agregada.
-¿Deseas agregar otra tarea? Escribe 'si' o 'no': si
-Escribe la nueva tarea: tarea de artes
-Tarea agregada. 
-¿Deseas agregar otra tarea? Escribe 'si' o 'no': si
-Escribe la nueva tarea: practicar ejercicios mate
-Tarea agregada. 
-¿Deseas agregar otra tarea? Escribe 'si' o 'no': no
---- MENÚ ---
-'''
+            print("Opción no válida.")
+        repetir = input("¿Quieres agregar otra tarea? (si/no): ")
+    return matriz_tareas
 
-def mostrar_tareas(tareas):
-    if len(tareas) == 0:
-        print("No tienes tareas.")
-        return
-    print("-- Lista de tareas --")
-    i = 0
-    while i < len(tareas):
-        nombre = tareas[i]["nombre"]
-        estado = tareas[i]["estado"]
-        print(str(i + 1) + ". " + nombre + " - " + estado)
-        i += 1
-'''
-Caso de prueba:
-Entrada: "tarea de programación", "si", "tarea de artes", "practicar ejercicios mate, "no"
-Salida: -- Lista de tareas --
-1. tarea de programación - Pendiente
-2. tarea de artes - Pendiente
-3. practicar ejercicios mate - Pendiente
 
-Por ejemplo si ya completaste una tarea, seleccionando el numero 2 que en este caso es tarea de artes, 
-y vuelves a seleccionar la opción 2, te mostrara lo siguiente:
--- Lista de tareas --
-1. tarea de programación - Pendiente
-2. tarea de artes - Completada
-3. practicar ejercicios mate - Pendiente
-'''
+"""
+Casos de prueba
 
-def completar_tarea(tareas):
-    if len(tareas) == 0:
-        print("No hay tareas para completar.")
-        return
-    mostrar_tareas(tareas)
-    numero = input("Número de la tarea a completar: ")
-    numero = int(numero)  
-    if numero < 1 or numero > len(tareas):
-        print("Número inválido.")
+"""
+def mostrar_tareas(matriz_tareas):
+    categorias = ["Escuela", "Casa", "Personal"]
+    print("LISTA DE TAREAS")
+    hay_tareas = False
+    for i in range(len(matriz_tareas)): 
+        if len(matriz_tareas[i]) > 0:
+            print("Categoría:", categorias[i])
+            for j in range(len(matriz_tareas[i])):  
+                tarea = matriz_tareas[i][j]
+                print(str(j + 1) + ". " + tarea[0] + " - " + tarea[1])
+            hay_tareas = True
+
+    if hay_tareas == False:
+        print("No hay tareas registradas")
+    print()
+
+"""
+Casos de prueba
+
+"""
+def completar_tarea(matriz_tareas):
+    mostrar_tareas(matriz_tareas)
+    cat = input("Selecciona la categoría: ")
+    num = input("Número de la tarea a completar: ")
+    cat = int(cat)
+    num = int(num)
+    if cat >= 1 and cat <= 3:
+        if num >= 1 and num <= len(matriz_tareas[cat - 1]):
+            matriz_tareas[cat - 1][num - 1][1] = "Completada"
+            print("Tarea marcada como completada")
+        else:
+            print("Número de tarea no válido")
     else:
-        tareas[numero-1]["estado"] = "Completada"
-        print("Tarea completada.")
-'''
-Caso de prueba:
-Entrada: "Número de la tarea a completar:" 2 
-Salida: Tarea completada.
-'''
+        print("Categoría no válida")
+
+
+"""
+Casos de prueba
+
+"""
+def eliminar_tarea(matriz_tareas):
+    mostrar_tareas(matriz_tareas)
+    cat = input("Selecciona la categoría: ")
+    num = input("Número de la tarea a eliminar: ")
+    cat = int(cat)
+    num = int(num)
+
+    if cat >= 1 and cat <= 3:
+        if num >= 1 and num <= len(matriz_tareas[cat - 1]):
+            nueva_lista = []
+            i = 0
+            while i < len(matriz_tareas[cat - 1]):
+                if i != num - 1:
+                    nueva_lista.append(matriz_tareas[cat - 1][i])
+                i = i + 1
+            matriz_tareas[cat - 1] = nueva_lista
+            print("Tarea eliminada")
+        else:
+            print("Número de tarea no válido")
+    else:
+        print("Categoría no válida")
+        
+
 def menuTarea():
-    print("--- MENÚ ---")
-    print("1. Agregar tareas")
-    print("2. Ver tareas")
-    print("3. Completar tarea")
-    print("4. Salir")
+    matriz_tareas = [[], [], []]
+    opcion = ""
+    while opcion != "6":
+        print("MENÚ")
+        print("1. Agregar tareas")
+        print("2. Ver tareas")
+        print("3. Completar tarea")
+        print("4. Eliminar tarea")
+        print("5. Salir")
 
+        opcion = input("Elige una opción: ")
+        if opcion == "1":
+            matriz_tareas = agregar_tareas(matriz_tareas)
+        elif opcion == "2":
+            mostrar_tareas(matriz_tareas)
+        elif opcion == "3":
+            completar_tarea(matriz_tareas)
+        elif opcion == "4":
+            eliminar_tarea(matriz_tareas)
+        elif opcion == "5":
+            print("Saliendo del programa")
+        else:
+            print("Opción no válida")
 
-
+menuTarea()
