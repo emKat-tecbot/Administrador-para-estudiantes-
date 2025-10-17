@@ -125,7 +125,7 @@ def main():
   elif opcion == 4:
     while True:
     opcion = menu()
-    if opcion == "1":
+    if opcion_horario == "1":
         materias = registrar_clases([
             {"nombre": "Cálculo", "horas_semanales": 3},
             {"nombre": "Física", "horas_semanales": 3},
@@ -133,11 +133,11 @@ def main():
         ])
         print(mostrar_clases(materias, as_text=True))
 
-    elif opcion == "2":
+    elif opcion_horario == "2":
         matriz_clases = acomodo_automatico_matriz(materias)
         print(imprimir_matriz(matriz_clases, as_text=True))
 
-    elif opcion == "3":
+    elif opcion_horario == "3":
         tareas = [
             registrar_tarea_calendario(
                 "Hoja de Derivadas", "Cálculo", 3, datetime(2025, 10, 18, 23, 59),
@@ -153,26 +153,26 @@ def main():
             )
         ]
 
-    elif opcion == "4":
+    elif opcion_horario == "4":
         calendario = generar_calendario_tareas(
             matriz_clases, ordenar_tareas_por_deadline(tareas)
         )
         print(imprimir_matriz(calendario, "Calendario combinado", as_text=True))
 
-    elif opcion == "5":
+    elif opcion_horario == "5":
         print(imprimir_reporte_carga(calendario, as_text=True))
         guardar_estado("estado.json", materias, calendario, tareas)
         print("Estado guardado en 'estado.json'.")
 
-    elif opcion == "6":
+    elif opcion_horario == "6":
         materias, matriz_clases, tareas = cargar_estado("estado.json")
         print("Estado cargado.")
 
-    elif opcion == "7":
+    elif opcion_horario == "7":
         exportar_txt("matriz.txt", matriz_clases)
         print("Matriz exportada a 'matriz.txt'.")
 
-    elif opcion == "0":
+    elif opcion_horario == "0":
         print("Saliendo del programa...")
         break
 
