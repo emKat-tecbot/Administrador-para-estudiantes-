@@ -1,77 +1,77 @@
 El organizador de estudios es un asistente por consola, de uso guiado y sencillo, que convierte en minutos un par de datos del alumno (tipo de curso, dificultad, días y carga diaria) para generar un plan mínimo viable dividido en secciones de teoría, práctica y simulacro. La herramienta reparte bloques de 30 minutos de forma razonable, prioriza práctica en cursos exigentes y al cierre entrega indicadores de cumplimiento, horas efectivas y un estado “listo/no listo” para decidir rápido el siguiente movimiento. Está pensada como punto de entrada para estudiantes nuevos y como base ampliable para futuras interacciones del proyecto. Autor: Luis Iniestra
 
-Algoritmo
+ALGORITMO GENERAL DEL MODULO:
 
-Entradas:
+  Entradas:
 
-  Nombre de la materia.
+    Nombre de la materia.
 
-  Tipo de curso (Cálculo, Programación u otro).
+    Tipo de curso (Cálculo, Programación u otro).
 
-  Nivel de dificultad (1 a 5).
+    Nivel de dificultad (1 a 5).
 
-  Número de días restantes para estudiar.
+    Número de días restantes para estudiar.
 
-  Carga diaria de estudio (en minutos).
+    Carga diaria de estudio (en minutos).
 
-Proceso:
+  Proceso:
 
-  Inicialización de listas:
+    Inicialización de listas:
 
-    pesos = [0.35, 0.45, 0.20] → proporciones para teoría, práctica y simulacro.
+      pesos = [0.35, 0.45, 0.20] → proporciones para teoría, práctica y simulacro.
   
-    min_plan = [0, 0, 0] y min_hechos = [0, 0, 0] para registrar minutos planeados y realizados.
+      min_plan = [0, 0, 0] y min_hechos = [0, 0, 0] para registrar minutos planeados y realizados.
 
-  Captura de datos:
+    Captura de datos:
 
-    Se piden al usuario los valores de materia, tipo, dificultad, días y carga diaria.
+      Se piden al usuario los valores de materia, tipo, dificultad, días y carga diaria.
 
-  Se valida que los valores sean correctos.
+      Se valida que los valores sean correctos.
 
-  Ajuste de pesos:
+    Ajuste de pesos:
 
-    Según el tipo de curso se modifican los valores de pesos.
+      Según el tipo de curso se modifican los valores de pesos.
 
-    Se normalizan los pesos para que la suma total sea igual a 1.
+      Se normalizan los pesos para que la suma total sea igual a 1.
 
-  Cálculo del plan de estudio:
+    Cálculo del plan de estudio:
 
-    Se calcula el total de minutos disponibles (días * carga diaria).
+      Se calcula el total de minutos disponibles (días * carga diaria).
 
-    Se distribuyen los minutos entre teoría, práctica y simulacro, ajustando la práctica según la dificultad.
+      Se distribuyen los minutos entre teoría, práctica y simulacro, ajustando la práctica según la dificultad.
 
-    Los resultados se guardan en min_plan.
+      Los resultados se guardan en min_plan.
 
-  Generación del plan diario:
+    Generación del plan diario:
 
-    Se crean bloques de 30 minutos por día.
+      Se crean bloques de 30 minutos por día.
 
-    Se asignan los bloques priorizando práctica, luego teoría y finalmente simulacro.
+      Se asignan los bloques priorizando práctica, luego teoría y finalmente simulacro.
 
-    Se van sumando los minutos realizados en min_hechos.
+      Se van sumando los minutos realizados en min_hechos.
 
-  Cálculo de indicadores:
+    Cálculo de indicadores:
 
-    Se calcula el porcentaje de cumplimiento (min_hechos / min_plan * 100).
+      Se calcula el porcentaje de cumplimiento (min_hechos / min_plan * 100).
 
-    Se calculan las horas efectivas (min_hechos_total / 60).
+      Se calculan las horas efectivas (min_hechos_total / 60).
 
-    Se determina el estado (“listo” si el cumplimiento es ≥ 80%, de lo contrario “no_listo”).
+      Se determina el estado (“listo” si el cumplimiento es ≥ 80%, de lo contrario “no_listo”).
 
-  Presentación de resultados:
+    Presentación de resultados:
 
-    Se muestran los minutos planificados y realizados por sección.
+      Se muestran los minutos planificados y realizados por sección.
 
-    Se muestran los indicadores finales de desempeño.
+      Se muestran los indicadores finales de desempeño.
 
-Salidas
+  Salidas
 
-  Minutos planificados por sección: Teoría, Práctica y Simulacro.
+    Minutos planificados por sección: Teoría, Práctica y Simulacro.
 
-  Distribución diaria del estudio en bloques de 30 minutos.
+    Distribución diaria del estudio en bloques de 30 minutos.
 
-  Porcentaje total de cumplimiento.
+    Porcentaje total de cumplimiento.
 
-  Horas efectivas de estudio.
+    Horas efectivas de estudio.
 
-  Estado final del plan (“listo” o “no_listo”).
+    Estado final del plan (“listo” o “no_listo”).
