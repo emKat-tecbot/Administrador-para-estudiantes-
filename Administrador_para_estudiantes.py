@@ -180,20 +180,32 @@ def main():
         print("Opción inválida. Intenta nuevamente.")
     Codigo.main()
   elif opcion == 5:
-    opcion = input("Elige una opción: ")
-        if opcion == "1":
-            matriz_tareas = agregar_tareas(matriz_tareas)
-        elif opcion == "2":
-            mostrar_tareas(matriz_tareas)
-        elif opcion == "3":
-            completar_tarea(matriz_tareas)
-        elif opcion == "4":
-            eliminar_tarea(matriz_tareas)
-        elif opcion == "5":
-            print("Saliendo del programa")
-        else:
-            print("Opción no válida")
+    print("\n=== ADMINISTRADOR DE TAREAS ===")
+    matriz_tareas = [[], [], []]
+    opcion_tarea = ""
+    while opcion_tarea != "5":
+      print("\nMENÚ DE TAREAS")
+      print("1. Agregar tareas")
+      print("2. Ver tareas")
+      print("3. Completar tarea")
+      print("4. Eliminar tarea")
+      print("5. Salir al menú principal")
+      opcion_tarea = input("Elige una opción: ")
+      if opcion_tarea == "1":
+        matriz_tareas = agregar_tareas(matriz_tareas)
+      elif opcion_tarea == "2":
+        mostrar_tareas(matriz_tareas)
+      elif opcion_tarea == "3":
+        completar_tarea(matriz_tareas)
+      elif opcion_tarea == "4":
+        eliminar_tarea(matriz_tareas)
+      elif opcion_tarea == "5":
+        print("Saliendo del administrador de tareas...")
+      else:
+        print("Opción no válida, intenta de nuevo.")
+        
   elif opcion == 6:
-    print("Gracias, adios :D")
+        print("Gracias, adios :D")
+
 
 main()
