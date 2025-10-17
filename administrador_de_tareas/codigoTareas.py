@@ -4,7 +4,19 @@ eliminarlas y ver estadísticas usando listas (matrices).
 """
 
 """
-Casos de prueba
+Casos de prueba:
+Categorías disponibles:
+1. Escuela
+2. Casa
+3. Personal
+Selecciona una categoría: 1
+Escribe la tarea: estudiar matemáticas
+Tarea agregada
+¿Quieres agregar otra tarea? (si/no): si
+Selecciona una categoría: 2
+Escribe la tarea: lavar ropa
+Tarea agregada
+¿Quieres agregar otra tarea? (si/no): no
 
 """
 def agregar_tareas(matriz_tareas):
@@ -22,7 +34,7 @@ def agregar_tareas(matriz_tareas):
             if nombre != "":
                 tarea = [nombre, "Pendiente"]   
                 matriz_tareas[categoria].append(tarea)
-                print("Tarea agregada.")
+                print("Tarea agregada")
             else:
                 print("No se puede agregar una tarea vacía")
         else:
@@ -32,8 +44,21 @@ def agregar_tareas(matriz_tareas):
 
 
 """
-Casos de prueba
+Casos de prueba: 
+LISTA DE TAREAS
+Categoría: Escuela
+1. estudiar matemáticas - Pendiente
+Categoría: Casa
+1. lavar ropa - Pendiente
 
+Categoría: Escuela
+1. biologia - Completada
+Categoría: Casa
+1. lavar - Pendiente
+
+LISTA DE TAREAS
+Categoría: Casa
+1. lavar - Pendiente
 """
 def mostrar_tareas(matriz_tareas):
     categorias = ["Escuela", "Casa", "Personal"]
@@ -52,8 +77,16 @@ def mostrar_tareas(matriz_tareas):
     print()
 
 """
-Casos de prueba
+Casos de prueba:
+LISTA DE TAREAS
+Categoría: Escuela
+1. biologia - Pendiente
+Categoría: Casa
+1. lavar - Pendiente
 
+Selecciona la categoría: 1
+Número de la tarea a completar: 1
+Tarea completada
 """
 def completar_tarea(matriz_tareas):
     mostrar_tareas(matriz_tareas)
@@ -64,7 +97,7 @@ def completar_tarea(matriz_tareas):
     if cat >= 1 and cat <= 3:
         if num >= 1 and num <= len(matriz_tareas[cat - 1]):
             matriz_tareas[cat - 1][num - 1][1] = "Completada"
-            print("Tarea marcada como completada")
+            print("Tarea completada")
         else:
             print("Número de tarea no válido")
     else:
@@ -73,6 +106,15 @@ def completar_tarea(matriz_tareas):
 
 """
 Casos de prueba
+LISTA DE TAREAS
+Categoría: Escuela
+1. biologia - Completada
+Categoría: Casa
+1. lavar - Pendiente
+
+Selecciona la categoría: 1
+Número de la tarea a eliminar: 1
+Tarea eliminada
 
 """
 def eliminar_tarea(matriz_tareas):
