@@ -16,11 +16,7 @@ def crear_plan(materia, tipo_curso, dificultad, dias_restantes, carga_diaria_min
         pesos = [0.25, 0.55, 0.20]
     else:
         pesos = [0.35, 0.45, 0.20]
-
-# -----------------------------
-# Funciones de apoyo (listas)
-# -----------------------------
-
+        
     # Normalizar pesos
     s = pesos[0] + pesos[1] + pesos[2]
     if s != 0:
