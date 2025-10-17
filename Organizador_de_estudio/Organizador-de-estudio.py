@@ -2,7 +2,7 @@
 # Generador de planes de estudio
 # -----------------------------
 #Define el archivo 
-NOMBRE_ARCHIVO = "plan_estudio.txt"
+NOMBRE_ARCHIVO = "Organizador-de-estudio/plan_estudio.txt"
 
 # 0=teoría, 1=práctica, 2=simulacro
 ETIQUETAS = ["TEORÍA", "PRÁCTICA", "SIMULACRO"]
