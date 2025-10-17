@@ -1,8 +1,8 @@
 def menu() -> str:
     print("===== ORGANIZADOR DE HORARIOS =====")
-    print("1) Registrar materias (ejemplo)")
+    print("1) Registrar materias ")
     print("2) Generar matriz de clases automática")
-    print("3) Registrar tareas (ejemplo)")
+    print("3) Registrar tareas ")
     print("4) Generar calendario combinado")
     print("5) Reporte y guardar estado")
     print("6) Cargar estado desde archivo")
