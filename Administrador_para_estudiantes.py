@@ -1,5 +1,5 @@
 from calculadora_de_calificaciones import codigo_calculadorDeNotas
-from Organizador-de-estudio import crear_plan, generar_horario, calcular_indicadores, guardar_plan, cargar_plan
+from Organizador_de_estudio import crear_plan, generar_horario, calcular_indicadores, guardar_plan, cargar_plan
 from organizador_de_horario import Codigo
 from administrador_de_tareas import menu
 from calculadora_de_calificaciones import calificacionMenu
