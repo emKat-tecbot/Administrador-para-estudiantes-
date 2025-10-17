@@ -73,7 +73,53 @@ def main():
      Seguimiento_Alimenticio_Menu.menu()  
      Seguimiento_Alimenticio.main()      
   elif opcion == 3:
-    OrganizadorDeEstudio.iniciar()
+    print("\n=== ORGANIZADOR DE ESTUDIO ===")
+    usar_guardado = input("¿Cargar plan guardado? (s/n): ").strip().lower()
+
+    plan = None
+    if usar_guardado == "s":
+        plan = cargar_plan()
+        if plan is None:
+            print("No se encontró archivo. Vamos a crear uno nuevo.")
+            usar_guardado = "n"
+
+    if usar_guardado != "s":
+        materia = input("Materia: ").strip()
+        tipo = input("Tipo de curso (Calculo/Programacion/otro): ").strip()
+        dificultad = int(input("Dificultad (1-5): ").strip())
+        dias = int(input("Días restantes: ").strip())
+        carga = int(input("Carga diaria (minutos): ").strip())
+        plan = crear_plan(materia, tipo, dificultad, dias, carga)
+
+        if input("¿Guardar este plan? (s/n): ").strip().lower() == "s":
+            if guardar_plan(plan):
+                print("Plan guardado.")
+            else:
+                print("No se pudo guardar el plan.")
+              
+    res = generar_horario(plan)
+    ind = calcular_indicadores(plan, res["min_hechos"])
+    print("\n--- Resumen del plan (minutos por sección) ---")
+    print("Teoría:", plan["min_plan"][0], "| Práctica:", plan["min_plan"][1], "| Simulacro:", plan["min_plan"][2])
+
+    print("\n--- Plan diario sugerido ---")
+    for linea in res["lineas"]:
+        print(linea)
+
+    print("\n--- Matriz de bloques (por día) ---")
+    for idx, fila in enumerate(res["matriz"], start=1):
+        print("Día", idx, "->", fila)
+
+    print("\n=== INDICADORES ===")
+    print("Materia:", ind["materia"])
+    print("Tipo de curso:", ind["tipo_curso"])
+    print("Días:", ind["dias_restantes"], "| Carga (min/día):", ind["carga_diaria_min"])
+    print("Min plan (T/P/S):", ind["min_plan"])
+    print("Min hechos (T/P/S):", ind["min_hechos"])
+    print("Cumplimiento %:", ind["cumplimiento_pct"])
+    print("Horas efectivas:", ind["horas_efectivas"])
+    print("Estado:", ind["estado"])
+    
   elif opcion == 4:
     while True:
     opcion = menu()
