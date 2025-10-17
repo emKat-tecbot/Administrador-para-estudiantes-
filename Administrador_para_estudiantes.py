@@ -1,7 +1,6 @@
 from calculadora_de_calificaciones import codigo_calculadorDeNotas
 from Organizador_de_estudio import crear_plan, generar_horario, calcular_indicadores, guardar_plan, cargar_plan
 from organizador_de_horario import Codigo
-from administrador_de_tareas import menu
 from calculadora_de_calificaciones import calificacionMenu
 from organizador_de_horario import horario_menu
 from administrador_de_tareas import codigoTareas
@@ -181,21 +180,19 @@ def main():
         print("Opción inválida. Intenta nuevamente.")
     Codigo.main()
   elif opcion == 5:
-    tareas = []
-    while True:
-      menuTarea()
-      opcion = input("Selecciona una opción: ")
-      if opcion == "1":
-        codigoTareas.agregar_tareas(tareas)
-      elif opcion == "2":
-          codigoTareas.mostrar_tareas(tareas)
-      elif opcion == "3":
-          codigoTareas.completar_tarea(tareas)
-      elif opcion == "4":
-          print("Adiós")
-          break
-      else:
-          print("Opción no válida.")
+    opcion = input("Elige una opción: ")
+        if opcion == "1":
+            matriz_tareas = agregar_tareas(matriz_tareas)
+        elif opcion == "2":
+            mostrar_tareas(matriz_tareas)
+        elif opcion == "3":
+            completar_tarea(matriz_tareas)
+        elif opcion == "4":
+            eliminar_tarea(matriz_tareas)
+        elif opcion == "5":
+            print("Saliendo del programa")
+        else:
+            print("Opción no válida")
   elif opcion == 6:
     print("Gracias, adios :D")
 
