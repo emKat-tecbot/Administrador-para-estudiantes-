@@ -73,7 +73,7 @@ def main():
      Seguimiento_Alimenticio_Menu.menu()  
      Seguimiento_Alimenticio.main()      
   elif opcion == 3:
-    print("\n--- Organizador de estudio ---")
+    print("\n=== ORGANIZADOR DE ESTUDIO ===")
     usar_guardado = input("¿Cargar plan guardado? (s/n): ").strip().lower()
 
     plan = None
