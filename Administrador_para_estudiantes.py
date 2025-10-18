@@ -4,8 +4,7 @@ from organizador_de_horario import Codigo
 from calculadora_de_calificaciones import calificacionMenu
 from organizador_de_horario import horario_menu
 from administrador_de_tareas import codigoTareas
-from Seguimiento_Alimenticio import Seguimiento_Alimenticio
-from Seguimiento_Alimenticio import Seguimiento_Alimenticio_Menu
+from Seguimiento_Alimenticio import Seguimiento
 from datetime import datetime
 from organizador_horario_universitario import *
 
@@ -68,9 +67,46 @@ def main():
           lista.append([clase,nota,meta,dificultad])
         print(lista)   
   elif opcion == 2:
-     print("\n=== SEGUIMIENTO ALIMENTICIO ===")
-     Seguimiento_Alimenticio_Menu.menu()  
-     Seguimiento_Alimenticio.main()      
+    seguimiento.asegurar_archivos()
+
+    while True:
+        print("\n--- MENÚ SEGUIMIENTO ALIMENTICIO ---")
+        print("1. Registrar o editar meta de macronutrientes")
+        print("2. Registrar nueva comida")
+        print("3. Ver resumen del día (elige lo que comiste)")
+        print("4. Sugerir menú aleatorio del día")
+        print("5. Ver comidas guardadas")
+        print("6. Guardar comida como favorita")
+        print("7. Eliminar comida")
+        print("8. Ver comidas favoritas")
+        print("9. Ver cumplimiento total")
+        print("10. Regresar al menú principal")
+
+        opcion = input("\nSelecciona una opción: ")
+
+        if opcion == "1":
+            seguimiento.guardar_meta()
+        elif opcion == "2":
+            seguimiento.registrar_comida()
+        elif opcion == "3":
+            seguimiento.resumen_dia()
+        elif opcion == "4":
+            seguimiento.sugerir_menu()
+        elif opcion == "5":
+            seguimiento.mostrar_comidas()
+        elif opcion == "6":
+            seguimiento.guardar_favoritas()
+        elif opcion == "7":
+            seguimiento.eliminar_comida()
+        elif opcion == "8":
+            seguimiento.mostrar_favoritas()
+        elif opcion == "9":
+            seguimiento.cumplimiento_total()
+        elif opcion == "10":
+            print("\nRegresando al menú principal...")
+            break
+        else:
+            print("Opción no válida. Intenta de nuevo.")
   elif opcion == 3:
     print("\n=== ORGANIZADOR DE ESTUDIO ===")
     usar_guardado = input("¿Cargar plan guardado? (s/n): ").strip().lower()
