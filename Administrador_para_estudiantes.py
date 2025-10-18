@@ -184,7 +184,7 @@ def main():
     matriz_tareas = [[], [], []]
     opcion_tarea = ""
     while opcion_tarea != "5":
-      print("\nMENÚ DE TAREAS")
+      print("MENÚ DE TAREAS")
       print("1. Agregar tareas")
       print("2. Ver tareas")
       print("3. Completar tarea")
