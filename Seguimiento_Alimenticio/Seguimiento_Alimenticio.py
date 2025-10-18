@@ -19,7 +19,6 @@ def guardar_meta():
     archivo.close()
     print("Meta guardada correctamente.\n")
 
-
 def leer_meta():
     asegurar_archivos()
     f = open("meta.txt", "r")
@@ -46,7 +45,6 @@ def registrar_comida():
     archivo.close()
     print("Comida registrada correctamente.\n")
 
-
 def mostrar_comidas():
     asegurar_archivos()
     print("\n--- Comidas registradas ---")
@@ -68,7 +66,6 @@ def mostrar_comidas():
             contador += 1
         i += 1
     print()
-
 
 def resumen_dia():
     asegurar_archivos()
@@ -121,7 +118,6 @@ def resumen_dia():
     else:
         estado = "no cumplida"
         print(" Meta diaria NO cumplida.")
-
 
     dia = input("Escribe el día (lunes, martes, miercoles, jueves, viernes, sabado, domingo): ").lower()
     h = open("historial.txt", "a")
