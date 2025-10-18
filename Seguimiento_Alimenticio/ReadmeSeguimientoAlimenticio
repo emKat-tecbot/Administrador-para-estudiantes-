@@ -1,84 +1,209 @@
-Este proyecto es un organizador de comidas diario desarrollado en Python, que permite al usuario registrar los alimentos que consume durante el día y calcular automáticamente el total de macronutrientes ingeridos: proteínas, carbohidratos y grasas.
-Además, el programa compara los resultados con los objetivos nutricionales del usuario y muestra una evaluación general sobre si la dieta fue balanceada o si predominó algún macronutriente.
+1. Descripción del problema / Contexto
 
-Este proyecto integra variables, funciones, ciclos, decisiones y listas para almacenar los datos. En avances posteriores se planea guardar la información en archivos y generar un historial de días.
+En la actualidad, muchas personas buscan mejorar su alimentación y mantener un seguimiento adecuado de sus macronutrientes (proteínas, carbohidratos y grasas) para cumplir metas específicas como aumentar masa muscular, bajar de peso o mantener un equilibrio saludable.
 
-Funcionamiento general
+El problema es que llevar un registro manual de las comidas diarias resulta complicado y propenso a errores. Por ello, este proyecto desarrolla un programa en Python que permite al usuario registrar sus metas nutricionales, anotar las comidas que consume, visualizar su progreso diario y semanal, y mantener una base de datos simple de alimentos, todo desde la consola.
 
-El programa utiliza una estructura modular dividida en tres archivos:
+Este proyecto aplica los conceptos aprendidos durante el curso:
 
-seguimiento.py → contiene todas las funciones principales del proyecto.
+Uso de variables, condicionales y ciclos (for, while, if).
 
-menu.py → muestra el menú principal con las opciones disponibles.
+Manejo de listas y strings.
 
-main.py → controla el flujo del programa y manda llamar las funciones según la opción elegida.
+Lectura y escritura de archivos de texto.
 
-El usuario puede:
+Organización del código mediante funciones y un menú principal.
 
-Ingresar sus objetivos diarios de proteínas, carbohidratos y grasas.
+Separación modular del código (funciones en un archivo y main en otro).
 
-Registrar sus comidas (por ejemplo, desayuno, comida, snack), indicando:
+El programa simula un sistema básico de control nutricional personal con un menú interactivo que guía al usuario paso a paso para ingresar sus datos, registrar comidas, calcular consumos y revisar sus avances.
 
-qué equivale una porción,
+2. Algoritmos del programa
+ Algoritmo general del programa
 
-cuántas porciones comió,
+Iniciar el programa e importar el módulo Seguimiento_Alimenticio.
 
-y cuántos gramos de cada macronutriente tiene.
+Mostrar el menú principal con las opciones disponibles.
 
-Ver los totales de nutrientes consumidos.
+Según la elección del usuario:
 
-Evaluar su dieta comparando el consumo con los objetivos del día.
+Registrar o editar su meta de macronutrientes.
 
-Ejecutar pruebas de ejemplo para verificar el correcto funcionamiento del código.
+Registrar una nueva comida con sus macros.
 
-Algoritmo general
+Mostrar las comidas registradas filtradas por tipo.
 
-Mostrar menú principal.
+Calcular un resumen del día basado en lo que comió.
 
-Si el usuario elige registrar comidas:
+Sugerir un menú aleatorio (batido, almuerzo, cena).
 
-Solicitar objetivos diarios (P, C, G).
+Eliminar comidas guardadas.
 
-Registrar los datos de cada comida en una lista.
+Guardar comidas como favoritas y mostrarlas.
 
-Calcular totales recorriendo la lista con un ciclo for.
+Consultar el cumplimiento total semanal.
 
-Comparar los resultados contra los objetivos usando condicionales if / elif / else.
+Leer o escribir la información en los archivos .txt para mantener los registros persistentes.
 
-Mostrar si cada macro está por debajo, en el objetivo o por encima.
+Repetir el menú hasta que el usuario elija la opción de salir.
 
-Determinar el tipo de dieta del día: alta en proteínas, carbohidratos, grasas o balanceada.
+🔍 Algoritmos por función
+1. guardar_meta()
 
-Repetir el menú hasta que el usuario elija salir.
+Propósito:
+Guardar o actualizar la meta diaria de macronutrientes del usuario.
 
-Estructura de datos
+Algoritmo:
 
-Cada comida se almacena como una lista con la siguiente forma:
+Pedir al usuario los gramos de proteína, carbohidratos y grasa.
 
-["nombre", "porcion", proteinas_consumidas, carbohidratos_consumidos, grasas_consumidas]
+Abrir el archivo meta.txt en modo escritura.
 
+Guardar los tres valores separados por comas.
 
-Todas las comidas registradas se guardan dentro de una lista principal, por ejemplo:
+Cerrar el archivo y mostrar mensaje de confirmación.
 
-comidas = [
-    ["Desayuno", "2 huevos", 20, 0, 10],
-    ["Comida", "1 taza de arroz", 5, 45, 1],
-    ["Cena", "150 g de pollo", 30, 0, 5]
-]
+2. leer_meta()
 
-Funciones principales
+Propósito:
+Leer los valores guardados en meta.txt para usarlos en cálculos posteriores.
 
-registrarComida(nombre)
-Solicita los datos de una comida (porción, macros, porciones consumidas) y devuelve una lista con los valores totales.
+Algoritmo:
 
-mostrarComidas(comidas)
-Imprime en pantalla todas las comidas registradas con su información.
+Abrir el archivo meta.txt en modo lectura.
 
-calcularTotales(comidas)
-Recorre la lista principal y suma los valores de proteínas, carbohidratos y grasas.
+Leer la línea y dividirla por comas usando .split(",").
 
-evaluarDieta(totales, objetivos)
-Compara los totales contra los objetivos y devuelve un resumen textual del resultado.
+Convertir los valores a tipo float.
 
-pruebas()
-Ejecuta casos de ejemplo para verificar que las funciones trabajen correctamente.
+Retornar las tres variables: proteína, carbohidratos y grasa.
+
+3. registrar_comida()
+
+Propósito:
+Registrar una nueva comida con sus valores nutricionales.
+
+Algoritmo:
+
+Solicitar al usuario el nombre, tipo (batido, almuerzo o cena), proteínas, carbohidratos, grasas e ingredientes.
+
+Crear una línea con los datos separados por comas.
+
+Abrir comidas.txt en modo append (añadir).
+
+Escribir la línea y cerrar el archivo.
+
+Mostrar confirmación.
+
+4. mostrar_comidas()
+
+Propósito:
+Mostrar todas las comidas guardadas o filtrarlas por tipo.
+
+Algoritmo:
+
+Abrir comidas.txt y leer todas las líneas.
+
+Preguntar al usuario si desea ver todas o filtrar (batido/almuerzo/cena).
+
+Recorrer las líneas con un ciclo for.
+
+Dividir cada línea por comas y mostrar la información formateada.
+
+5. resumen_dia()
+
+Propósito:
+Calcular los macronutrientes totales consumidos y compararlos con la meta diaria.
+
+Algoritmo:
+
+Leer la meta desde meta.txt (proteína, carbohidratos, grasa).
+
+Mostrar las comidas registradas y permitir que el usuario seleccione las que comió.
+
+Sumar los valores nutricionales de las comidas elegidas.
+
+Calcular la diferencia entre meta y consumo.
+
+Mostrar un resumen con los totales y el resultado (si cumplió o no la meta).
+
+6. sugerir_menu()
+
+Propósito:
+Ofrecer una combinación aleatoria de batido, almuerzo y cena.
+
+Algoritmo:
+
+Leer todas las comidas del archivo comidas.txt.
+
+Agruparlas según su tipo.
+
+Seleccionar una al azar con random.choice() por cada tipo.
+
+Mostrar el menú sugerido con los valores totales de macronutrientes.
+
+7. eliminar_comida()
+
+Propósito:
+Eliminar una comida seleccionada del registro.
+
+Algoritmo:
+
+Mostrar las comidas numeradas.
+
+Pedir al usuario el número de la comida a eliminar.
+
+Volver a escribir el archivo comidas.txt omitiendo esa línea.
+
+8. guardar_favoritas()
+
+Propósito:
+Guardar una comida seleccionada como favorita.
+
+Algoritmo:
+
+Mostrar todas las comidas.
+
+Pedir el número de la comida favorita.
+
+Abrir favoritas.txt y escribir la línea correspondiente.
+
+9. mostrar_favoritas()
+
+Propósito:
+Mostrar las comidas favoritas guardadas.
+
+Algoritmo:
+
+Abrir favoritas.txt y leer todas las líneas.
+
+Mostrar cada comida con su tipo y valores nutricionales.
+
+10. cumplimiento_total()
+
+Propósito:
+Revisar el historial de los días y calcular el porcentaje de cumplimiento general.
+
+Algoritmo:
+
+Abrir historial.txt y contar los días cumplidos, no cumplidos y sin uso.
+
+Calcular los porcentajes con una regla de tres.
+
+Mostrar en pantalla los resultados.
+
+ Conclusión
+
+Este proyecto demuestra la integración de todos los temas vistos en clase:
+
+Variables y estructuras de control.
+
+Listas y manipulación de cadenas.
+
+Archivos para persistencia de datos.
+
+Diseño modular con funciones y un menú principal.
+
+Lógica aplicada a un contexto real de seguimiento alimenticio.
+
+Gracias a su estructura, el programa es funcional, legible y cumple con las convenciones de estilo Python básicas.
