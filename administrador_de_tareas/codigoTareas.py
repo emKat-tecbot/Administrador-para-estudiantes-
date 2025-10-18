@@ -165,4 +165,3 @@ def menuTarea():
         else:
             print("Opción no válida")
 
-menuTarea()
