@@ -1,139 +1,201 @@
-# ------------------------------------------------------------
-# Proyecto: Seguimiento Alimenticio
-# Autor: David García Zamora
-# ------------------------------------------------------------
-# Este programa permite registrar comidas y calcular el total
-# de proteínas, carbohidratos y grasas del día. También compara
-# los resultados con los objetivos del usuario.
-# ------------------------------------------------------------
+import matplotlib.pyplot as plt
+import random
 
+def guardar_meta():
+    print("\n--- Establecer o editar meta diaria ---")
+    prote = input("Gramos de proteína: ")
+    carb = input("Gramos de carbohidratos: ")
+    grasa = input("Gramos de grasa: ")
 
-def registrarComida(nombre):
-    print(f"\n--- {nombre} ---")
-    porcion = input("¿Qué equivale una porción? (ej. 100g, 1 taza): ")
-    prote = float(input("Proteínas por porción (g): "))
-    carb  = float(input("Carbohidratos por porción (g): "))
-    gras  = float(input("Grasas por porción (g): "))
-    porciones = float(input("¿Cuántas porciones consumiste hoy?: "))
+    archivo = open("meta.txt", "w")
+    archivo.write(prote + "," + carb + "," + grasa)
+    archivo.close()
+    print("Meta guardada correctamente.\n")
 
-    consP = prote * porciones
-    consC = carb  * porciones
-    consG = gras  * porciones
+def leer_meta():
+    archivo = open("meta.txt", "r")
+    linea = archivo.readline().strip()
+    archivo.close()
+    datos = linea.split(",")
+    prote = float(datos[0])
+    carb = float(datos[1])
+    grasa = float(datos[2])
+    return prote, carb, grasa
 
-    comida = [nombre, porcion, consP, consC, consG]
-    return comida
+def registrar_comida():
+    print("\n--- Registrar nueva comida ---")
+    nombre = input("Nombre de la comida: ")
+    tipo = input("Tipo (batido/almuerzo/cena): ").lower()
+    prote = input("Proteína (g): ")
+    carb = input("Carbohidratos (g): ")
+    grasa = input("Grasas (g): ")
+    ingredientes = input("Ingredientes (separados por coma): ")
 
+    archivo = open("comidas.txt", "a")
+    linea = nombre + "," + tipo + "," + prote + "," + carb + "," + grasa + "," + ingredientes + "\n"
+    archivo.write(linea)
+    archivo.close()
+    print("Comida registrada correctamente.\n")
 
+def mostrar_comidas():
+    print("\n--- Comidas registradas ---")
+    archivo = open("comidas.txt", "r")
+    lineas = archivo.readlines()
+    archivo.close()
+    tipo = input("¿Qué tipo deseas ver? (batido/almuerzo/cena/todas): ").lower()
 
-def mostrarComidas(lista):
-    if len(lista) == 0:
-        print("No hay comidas registradas.")
+    contador = 1
+    for linea in lineas:
+        datos = linea.strip().split(",")
+        if tipo == "todas" or tipo == datos[1]:
+            print(str(contador) + ") " + datos[0] + " (" + datos[1] + ") → P:" + datos[2] + " C:" + datos[3] + " G:" + datos[4])
+            contador += 1
+    print()
+
+def resumen_dia():
+    print("\n--- Resumen del Día ---")
+    meta_p, meta_c, meta_g = leer_meta()
+    archivo = open("comidas.txt", "r")
+    lineas = archivo.readlines()
+    archivo.close()
+
+    total_p = 0
+    total_c = 0
+    total_g = 0
+
+    for linea in lineas:
+        datos = linea.strip().split(",")
+        total_p += float(datos[2])
+        total_c += float(datos[3])
+        total_g += float(datos[4])
+
+    print("Consumido: P:", total_p, " C:", total_c, " G:", total_g)
+    print("Falta: P:", meta_p - total_p, " C:", meta_c - total_c, " G:", meta_g - total_g, "\n")
+
+def sugerir_menu():
+    print("\n--- Sugerencia del Día ---")
+    archivo = open("comidas.txt", "r")
+    lineas = archivo.readlines()
+    archivo.close()
+
+    tipos = ["batido", "almuerzo", "cena"]
+
+    for tipo in tipos:
+        opciones = []
+        for linea in lineas:
+            datos = linea.strip().split(",")
+            if datos[1] == tipo:
+                opciones.append(datos)
+        if len(opciones) > 0:
+            elegido = random.choice(opciones)
+            print(tipo.title() + ": " + elegido[0] + " → P:" + elegido[2] + " C:" + elegido[3] + " G:" + elegido[4])
+    print()
+
+def eliminar_comida():
+    print("\n--- Eliminar comida ---")
+    mostrar_comidas()
+    numero = int(input("Número de comida a eliminar: "))
+
+    archivo = open("comidas.txt", "r")
+    lineas = archivo.readlines()
+    archivo.close()
+
+    nuevo = []
+    contador = 1
+    for linea in lineas:
+        if contador != numero:
+            nuevo.append(linea)
+        contador += 1
+
+    archivo = open("comidas.txt", "w")
+    for linea in nuevo:
+        archivo.write(linea)
+    archivo.close()
+    print("Comida eliminada correctamente.\n")
+
+def guardar_favoritas():
+    print("\n--- Guardar comida favorita ---")
+    mostrar_comidas()
+    numero = int(input("Número de comida favorita: "))
+
+    archivo = open("comidas.txt", "r")
+    lineas = archivo.readlines()
+    archivo.close()
+
+    archivo_fav = open("favoritas.txt", "a")
+    archivo_fav.write(lineas[numero - 1])
+    archivo_fav.close()
+    print("Comida añadida a favoritas.\n")
+
+def verificar_cumplimiento():
+    print("\n--- Verificación de cumplimiento semanal ---")
+    dia = input("Introduce el día actual (lunes, martes, miercoles, jueves, viernes, sabado, domingo): ").lower()
+
+    meta_p, meta_c, meta_g = leer_meta()
+    archivo = open("comidas.txt", "r")
+    lineas = archivo.readlines()
+    archivo.close()
+
+    total_p = 0
+    total_c = 0
+    total_g = 0
+    for linea in lineas:
+        datos = linea.strip().split(",")
+        total_p += float(datos[2])
+        total_c += float(datos[3])
+        total_g += float(datos[4])
+
+ 
+    if total_p >= meta_p and total_c >= meta_c and total_g >= meta_g:
+        resultado = "cumplida"
+        print("Meta diaria cumplida.")
     else:
-        print("\n--- Comidas Registradas ---")
-        for i in range(len(lista)):
-            print(f"{i+1}. {lista[i][0]} ({lista[i][1]}) - P:{lista[i][2]}g C:{lista[i][3]}g G:{lista[i][4]}g")
+        resultado = "no cumplida"
+        print("Meta diaria no cumplida.")
+
+ 
+    archivo = open("historial.txt", "a")
+    archivo.write(dia + "," + resultado + "\n")
+    archivo.close()
 
 
+    archivo = open("historial.txt", "r")
+    lineas = archivo.readlines()
+    archivo.close()
 
-def calcularTotales(lista):
-    totalP = totalC = totalG = 0
-    for i in range(len(lista)):
-        totalP += lista[i][2]
-        totalC += lista[i][3]
-        totalG += lista[i][4]
-    return [totalP, totalC, totalG]
+    print("\n--- Resumen semanal ---")
+    matriz = []
+    for linea in lineas:
+        datos = linea.strip().split(",")
+        matriz.append(datos)
 
+    for fila in matriz:
+        print(f"{fila[0].capitalize()}: {fila[1].capitalize()}")
+    print()
 
+def graficar_progreso():
+    print("\n--- Gráfico de Progreso ---")
+    meta_p, meta_c, meta_g = leer_meta()
+    archivo = open("comidas.txt", "r")
+    lineas = archivo.readlines()
+    archivo.close()
 
-def promedioMacros(lista):
-    if len(lista) == 0:
-        return [0, 0, 0]
-    total = calcularTotales(lista)
-    divisor = len(lista)
-    promP = total[0] / divisor
-    promC = total[1] / divisor
-    promG = total[2] / divisor
-    return [promP, promC, promG]
+    total_p = 0
+    total_c = 0
+    total_g = 0
+    for linea in lineas:
+        datos = linea.strip().split(",")
+        total_p += float(datos[2])
+        total_c += float(datos[3])
+        total_g += float(datos[4])
 
+    etiquetas = ['Proteína', 'Carbohidratos', 'Grasa']
+    consumido = [total_p, total_c, total_g]
+    meta = [meta_p, meta_c, meta_g]
 
+    plt.bar(etiquetas, meta, color='gray', label='Meta')
+    plt.bar(etiquetas, consumido, color='green', label='Consumido')
+    plt.legend()
+    plt.title("Comparación Meta vs Consumido")
+    plt.show()
 
-def evaluarDieta(totales, objetivos):
-    print("\n--- Comparación con objetivos ---")
-    etiquetas = ["Proteínas", "Carbohidratos", "Grasas"]
-    for i in range(3):
-        if totales[i] < objetivos[i]:
-            print(f"{etiquetas[i]}: por debajo del objetivo ({totales[i]} / {objetivos[i]} g)")
-        elif totales[i] > objetivos[i]:
-            print(f"{etiquetas[i]}: por encima del objetivo ({totales[i]} / {objetivos[i]} g)")
-        else:
-            print(f"{etiquetas[i]}: justo en el objetivo ({totales[i]} g)")
-
-    if totales[0] > totales[1] and totales[0] > totales[2]:
-        print("Dieta alta en proteínas.")
-    elif totales[1] > totales[0] and totales[1] > totales[2]:
-        print("Dieta alta en carbohidratos.")
-    elif totales[2] > totales[0] and totales[2] > totales[1]:
-        print("Dieta alta en grasas.")
-    else:
-        print("Dieta balanceada.")
-
-
-
-def pruebas():
-    comidas = [
-        ["Pollo", "100g", 25, 0, 3],
-        ["Arroz", "1 taza", 5, 45, 1],
-        ["Aguacate", "50g", 2, 3, 8]
-    ]
-    print("\nPrueba: comidas registradas de ejemplo")
-    mostrarComidas(comidas)
-    totales = calcularTotales(comidas)
-    print("\nTotales de prueba:", totales)
-    prom = promedioMacros(comidas)
-    print("Promedios de prueba:", prom)
-    objetivos = [60, 120, 50]
-    evaluarDieta(totales, objetivos)
-    
-def main():
-    comidas = []
-    
-    print("\n--- Objetivos diarios ---")
-    objP = float(input("Proteínas necesarias (g): "))
-    objC = float(input("Carbohidratos necesarios (g): "))
-    objG = float(input("Grasas necesarias (g): "))
-    objetivos = [objP, objC, objG]
-
-    
-    while True:
-        
-        opcion = input("Selecciona una opción (1-7): ")
-
-        if opcion == "1":
-            nombre = input("Nombre de la comida (ej. Desayuno, Almuerzo, Cena): ")
-            nueva = registrarComida(nombre)
-            comidas.append(nueva)
-            print("Comida registrada correctamente.")
-        elif opcion == "2":
-            mostrarComidas(comidas)
-        elif opcion == "3":
-            if len(comidas) == 0:
-                print("No hay comidas registradas.")
-            else:
-                totales = calcularTotales(comidas)
-                print(f"\nTotales del día: Proteínas={totales[0]}g, Carbohidratos={totales[1]}g, Grasas={totales[2]}g")
-        elif opcion == "4":
-            prom = promedioMacros(comidas)
-            print(f"\nPromedio por comida: Proteínas={prom[0]:.2f}g, Carbohidratos={prom[1]:.2f}g, Grasas={prom[2]:.2f}g")
-        elif opcion == "5":
-            totales = calcularTotales(comidas)
-            evaluarDieta(totales, objetivos)
-        elif opcion == "6":
-            pruebas()
-        elif opcion == "7":
-            print("Saliendo del seguimiento alimenticio...")
-            break
-        else:
-            print("Opción no válida, intenta de nuevo.")
-
-if __name__ == "__main__":
-    main()
