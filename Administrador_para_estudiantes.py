@@ -258,13 +258,13 @@ def main():
       print("5. Salir al menú principal")
       opcion_tarea = input("Elige una opción: ")
       if opcion_tarea == "1":
-        matriz_tareas = agregar_tareas(matriz_tareas)
+        matriz_tareas = codigoTareas.agregar_tareas(matriz_tareas)
       elif opcion_tarea == "2":
-        mostrar_tareas(matriz_tareas)
+        codigoTareas.mostrar_tareas(matriz_tareas)
       elif opcion_tarea == "3":
-        completar_tarea(matriz_tareas)
+        codigoTareas.completar_tarea(matriz_tareas)
       elif opcion_tarea == "4":
-        eliminar_tarea(matriz_tareas)
+        codigoTareas.eliminar_tarea(matriz_tareas)
       elif opcion_tarea == "5":
         print("Saliendo del administrador de tareas...")
       else:
