@@ -177,7 +177,7 @@ def main():
 
     plan = None
     if usar_guardado == "s":
-        plan = cargar_plan()
+        plan = Organizador_de_estudio.cargar_plan()
         if plan is None:
             print("No se encontró archivo o está vacío. Vamos a crear uno nuevo.")
             usar_guardado = "n"
@@ -189,15 +189,15 @@ def main():
         dias = int(input("Días restantes: ").strip())
         carga = int(input("Carga diaria (minutos): ").strip())
 
-        plan = crear_plan(materia, tipo, dificultad, dias, carga)
+        plan = Organizador_de_estudio.crear_plan(materia, tipo, dificultad, dias, carga)
 
         g = input("¿Guardar este plan? (s/n): ").strip().lower()
         if g == "s":
-            guardar_plan(plan)
+            Organizador_de_estudio.guardar_plan(plan)
             print("Plan guardado en", "plan_estudio.txt")
 
-    resultado = generar_horario(plan)
-    indicadores = calcular_indicadores(plan, resultado["min_hechos"])
+    resultado = Organizador_de_estudio.generar_horario(plan)
+    indicadores = Organizador_de_estudio.calcular_indicadores(plan, resultado["min_hechos"])
 
     print("\n--- Resumen del plan (minutos por sección) ---")
     print("Teoría:", plan["min_plan"][0], "| Práctica:", plan["min_plan"][1], "| Simulacro:", plan["min_plan"][2])
@@ -210,7 +210,7 @@ def main():
     indice = 0
     while indice < len(resultado["matriz"]):
         print("Día", (indice + 1), "->", resultado["matriz"][indice])
-        indice = indice + 1
+        indice += 1
 
     print("\n=== INDICADORES ===")
     print("Materia:", indicadores["materia"])
