@@ -228,49 +228,20 @@ def main():
       if opcion_horario == "1":
       organizador_de_horario .registrar_clases()
       elif opcion_horario == "2":
-        matriz_clases = acomodo_automatico_matriz(materias)
-        print(imprimir_matriz(matriz_clases, as_text=True))
-
+       organizador_de_horario .acomodo_automatico_matriz()
       elif opcion_horario == "3":
-        tareas = [
-            registrar_tarea_calendario(
-                "Hoja de Derivadas", "Cálculo", 3, datetime(2025, 10, 18, 23, 59),
-                tipo="TAREA", prioridad=4, dificultad=2, energia="MEDIA"
-            ),
-            registrar_tarea_calendario(
-                "Estudiar Newton", "Física", 2, datetime(2025, 10, 17, 20, 0),
-                tipo="ESTUDIO", prioridad=5, dificultad=2, energia="ALTA"
-            ),
-            registrar_tarea_calendario(
-                "Práctica listas", "Programación", 2, datetime(2025, 10, 19, 21, 0),
-                tipo="PROYECTO", prioridad=3, dificultad=3, energia="MEDIA"
-            )
-        ]
-
+        organizador_de_horario .registrar_tarea_calendario()
       elif opcion_horario == "4":
-        calendario = generar_calendario_tareas(
-            matriz_clases, ordenar_tareas_por_deadline(tareas)
-        )
-        print(imprimir_matriz(calendario, "Calendario combinado", as_text=True))
-
+        organizador_de_horario .generar_calendario_tareas()
       elif opcion_horario == "5":
-        print(imprimir_reporte_carga(calendario, as_text=True))
-        guardar_estado("estado.json", materias, calendario, tareas)
-        print("Estado guardado en 'estado.json'.")
-
+        organizador_de_horario .reporte_carga()
       elif opcion_horario == "6":
-        materias, matriz_clases, tareas = cargar_estado("estado.json")
-        print("Estado cargado.")
-
+        organizador_de_horario .cargar_estado()
       elif opcion_horario == "7":
-        
-        exportar_txt("matriz.txt", matriz_clases)
-        print("Matriz exportada a 'matriz.txt'.")
-
+       organizador_de_horario .exportar_txt()
       elif opcion_horario == "0":
         print("Saliendo del programa...")
         break
-
       else:
         print("Opción inválida. Intenta nuevamente.")
     Codigo.main()
