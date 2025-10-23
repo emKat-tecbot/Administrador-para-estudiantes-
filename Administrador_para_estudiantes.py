@@ -226,19 +226,19 @@ def main():
     while True:
       opcion_horario = menu()
       if opcion_horario == "1":
-      codigo_horario .registrar_clases()
+      codigo_horario.registrar_clases()
       elif opcion_horario == "2":
-       codigo_horario  .acomodo_automatico_matriz()
+       codigo_horario.acomodo_automatico_matriz()
       elif opcion_horario == "3":
        codigo_horario  .registrar_tarea_calendario()
       elif opcion_horario == "4":
-        codigo_horario  .generar_calendario_tareas()
+        codigo_horario.generar_calendario_tareas()
       elif opcion_horario == "5":
-       codigo_horario  .reporte_carga()
+       codigo_horario.reporte_carga()
       elif opcion_horario == "6":
-        codigo_horario  .cargar_estado()
+        codigo_horario.cargar_estado()
       elif opcion_horario == "7":
-       codigo_horario  .exportar_txt()
+       codigo_horario.exportar_txt()
       elif opcion_horario == "0":
         print("Saliendo del programa...")
         break
