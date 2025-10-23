@@ -67,6 +67,7 @@ def porgresoDeNota (): #enseña si estas mejorandpo tus notas o no
     progreso = 0
     while True: #creacion de lista de notas de una materia
         miNota = input("Quisieras agregar una calificacion de una materia (y si si, n si no)? ")
+        miNota = miNota.lower()
         if miNota == "y":
             notas.append(int(input("Ingresa su nota: ")))
         if miNota == "n":
@@ -94,54 +95,47 @@ Entrada: 60, 59, 75, 89, 90, 50
 Salida: Estas mejorando tus calificaciones, sigue asi!
 '''
 
-def tiempoDeEstudio(entrada, entrada2): #nos cuenta que tanto debes estudiar para pasar el examen final
-    nota = entrada # la calificacion final promedio
-    calParaFinal = entrada2 # calificacion necesaria para pasar la final
-    gap = calParaFinal - nota # diferencia entre la nota necesaria y la que tienees
-    if gap < 5 : 
-        print("Ok, sabes mucho del tema no te preocupes")
-    elif gap < 10:
-        print("Deberias ponerle un buen tiempo a estudiar para el examen final")
-    elif gap < 15: 
-        print("Ok alerta roja, la hora de estudiar es ahora")
-
 def baseDeDatosdeNotas(clase, nota, meta, prioridad):
     baseDeDatos = [["Clase","Nota", "Meta", "Prioridad"]]
-    for i in range (len(clase)):
+    for i in range (len(clase)): #clasificacion de prioridades
         if prioridad[i]in [1,2,3]:
          prioridad[i]= "Baja"
         elif prioridad[i] in [4,5,6,7]:
          prioridad[i] = "Media"
         elif prioridad[i] in [8,9,10]:
          prioridad[i] = "Alta"
-        baseDeDatos.append([clase[i],nota[i],meta[i],prioridad[i]])
+        baseDeDatos.append([clase[i],nota[i],meta[i],prioridad[i]]) #cfreacion de primer renglon de base de datos
     
     for columnas in range(len(baseDeDatos)):
         for filas in range (len(baseDeDatos[columnas])):
-           print(baseDeDatos[columnas][filas], end = "-------")
+           print(baseDeDatos[columnas][filas], end = "-------") # usando las notas del usuario va creando renglones por cada clase registrada
         print("\n")
 
 # study planner calendar (day (goes untill the day of the exam), hours available, topics to study, priority of topic (based on dificulty of topic))
 def calendario ( temas, horasLibres, dificultad, hoy, fechaExamen):
-    dias = fechaExamen - hoy
-    temasRep = []
-    calendario = [["Dia","Horas a estudiar","Temas a estudiar","Topico de enfoque"]]
+    dias = fechaExamen - hoy #dias para el examen
+    temasRep = [] # repeticion de temas (mientras mas dificil mas se repite y por ende mas aparecen enel calendario)
+    calendario = [["Dia","Horas a estudiar","Temas a estudiar"]] # primer renglon de calendario
     for i in range (len(temas)):
-        temasRep.extend(temas * dificultad[i])
-                        
-    temasDeHoy = []
-    for a in range (len(temasRep)):
-        for b in range (min(3,len(temasRep))):
+        temasRep.extend(temas * dificultad[i])   
+    for a in range (dias): # ceacion del calendario
+        temasDeHoy = [] # temas del dia
+        for b in range (min(3,len(temasRep))): # el estudiante debe estudiar un maximo de 3 temas al dia
             tema = random.choice(temasRep) 
-            temasDeHoy[b].append(tema)
-        for i in range (1, dias + 1):
-            for j in range (len(horasLibres)):
-                calendario.append([j + 1,horasLibres[j],temasDeHoy[j]])
+            temasDeHoy.append(tema)
+        calendario.append([a + 1,horasLibres]) # se le agrega el dia y las horas libres promedio que tiene
+        for l in range (3):
+            calendario[a+1].append(temasDeHoy[l]) # se le agregan los temas del dia
+    for columnas in range (len(calendario)):
+        for filas in range (len(calendario[columnas])):
+           print(calendario[columnas][filas], end = "-------") # usando las notas del usuario va creando renglones por cada clase registrada
+        print("\n")
     print(calendario)
+calendario(["algebra",'calculo','geografia'],12,[7,8,9],24,27)
 
-
-def Archivo (baseDeDatosdeNotas,calendario):
+def Archivo (baseDeDatosdeNotas,calendario): # usa baseDeDatos y calendario para crear un archivo de expediente
     baseDeDatos = open("ArchivoDeTexto.txt","+w")
+    baseDeDatos.write("Tabla 1. Base de Notas")
     baseDeDatos.write(baseDeDatosdeNotas)
     baseDeDatos.write("\n")
     baseDeDatos.write("Tabla 2. Calendario de estudio")
@@ -149,7 +143,6 @@ def Archivo (baseDeDatosdeNotas,calendario):
     baseDeDatos.write(calendario)
     baseDeDatos.seek(0)
     baseDeDatos.read()
-Archivo(baseDeDatosdeNotas(["Matematica","Quimica","Sociales"],[85,90,78],[90,95,100],[9,7,5]),calendario(["Algebra","Trigonometria","Calculo"],[3,2,4],[3,2,5],1,7))
 
 
 def menu ():
