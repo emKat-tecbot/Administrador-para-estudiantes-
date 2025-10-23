@@ -226,13 +226,7 @@ def main():
     while True:
       opcion_horario = menu()
       if opcion_horario == "1":
-        materias = registrar_clases([
-            {"nombre": "Cálculo", "horas_semanales": 3},
-            {"nombre": "Física", "horas_semanales": 3},
-            {"nombre": "Programación", "horas_semanales": 4}
-        ])
-        print(mostrar_clases(materias, as_text=True))
-
+      organizador_de_horario .registrar_clases()
       elif opcion_horario == "2":
         matriz_clases = acomodo_automatico_matriz(materias)
         print(imprimir_matriz(matriz_clases, as_text=True))
