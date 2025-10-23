@@ -148,7 +148,10 @@ def menu ():
   1. Caificaion por clase
   2. ¿Qué nota necesito para pasar?
   3. ¿Qué tanto he progresado con esta nota?
-  4. Plan de estudio
+  4. Base de Notas
+  5. Calendario
+  6. Expediente
+  7. Salir
   ''')
   calcOpt = int(input("Que quisieras hacer? "))
   return calcOpt
