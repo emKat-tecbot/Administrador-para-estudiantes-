@@ -1,12 +1,9 @@
 from calculadora_de_calificaciones import codigo_calculadorDeNotas
-from Organizador_de_estudio import crear_plan, generar_horario, calcular_indicadores, guardar_plan, cargar_plan
-from organizador_de_horario import Codigo
-from calculadora_de_calificaciones import calificacionMenu
-from organizador_de_horario import horario_menu
+from Organizador_de_estudio import Organizador_de_estudio
+from organizador_de_horario import codigo_horario
 from administrador_de_tareas import codigoTareas
-from Seguimiento_Alimenticio import Seguimiento
+from Seguimiento_Alimenticio import Seguimiento_Alimenticio
 from datetime import datetime
-from organizador_horario_universitario import *
 
 def menu():
   print("==BIENVENIDO AL ADMINISTRADOR PARA ESTUDIANTES==")
@@ -29,7 +26,6 @@ def main():
       print("La opcion no esta en el menu intenta de nuevo por favor.")
   if opcion == 1:
     while True:
-      codigo_calculadorDeNotas.menu()
       optCal = codigo_calculadorDeNotas.menu()
       if optCal == 1:
         final = codigo_calculadorDeNotas.calPorClase()
@@ -67,7 +63,7 @@ def main():
           lista.append([clase,nota,meta,dificultad])
         print(lista)   
   elif opcion == 2:
-    seguimiento.asegurar_archivos()
+    Seguimiento_Alimenticio. asegurar_archivos()
 
     while True:
         print("\n--- MENÚ SEGUIMIENTO ALIMENTICIO ---")
@@ -85,23 +81,23 @@ def main():
         opcion = input("\nSelecciona una opción: ")
 
         if opcion == "1":
-            seguimiento.guardar_meta()
+            Seguimiento_Alimenticio.guardar_meta()
         elif opcion == "2":
-            seguimiento.registrar_comida()
+            Seguimiento_Alimenticio .registrar_comida()
         elif opcion == "3":
-            seguimiento.resumen_dia()
+            Seguimiento_Alimenticio .resumen_dia()
         elif opcion == "4":
-            seguimiento.sugerir_menu()
+            Seguimiento_Alimenticio.sugerir_menu()
         elif opcion == "5":
-            seguimiento.mostrar_comidas()
+            Seguimiento_Alimenticio .mostrar_comidas()
         elif opcion == "6":
-            seguimiento.guardar_favoritas()
+            Seguimiento_Alimenticio .guardar_favoritas()
         elif opcion == "7":
-            seguimiento.eliminar_comida()
+            Seguimiento_Alimenticio .eliminar_comida()
         elif opcion == "8":
-            seguimiento.mostrar_favoritas()
+            Seguimiento_Alimenticio .mostrar_favoritas()
         elif opcion == "9":
-            seguimiento.cumplimiento_total()
+            Seguimiento_Alimenticio .cumplimiento_total()
         elif opcion == "10":
             print("\nRegresando al menú principal...")
             break
@@ -160,8 +156,8 @@ def main():
     
   elif opcion == 4:
     while True:
-    opcion = menu()
-    if opcion_horario == "1":
+      opcion_horario = menu()
+      if opcion_horario == "1":
         materias = registrar_clases([
             {"nombre": "Cálculo", "horas_semanales": 3},
             {"nombre": "Física", "horas_semanales": 3},
@@ -169,11 +165,11 @@ def main():
         ])
         print(mostrar_clases(materias, as_text=True))
 
-    elif opcion_horario == "2":
+      elif opcion_horario == "2":
         matriz_clases = acomodo_automatico_matriz(materias)
         print(imprimir_matriz(matriz_clases, as_text=True))
 
-    elif opcion_horario == "3":
+      elif opcion_horario == "3":
         tareas = [
             registrar_tarea_calendario(
                 "Hoja de Derivadas", "Cálculo", 3, datetime(2025, 10, 18, 23, 59),
@@ -189,30 +185,30 @@ def main():
             )
         ]
 
-    elif opcion_horario == "4":
+      elif opcion_horario == "4":
         calendario = generar_calendario_tareas(
             matriz_clases, ordenar_tareas_por_deadline(tareas)
         )
         print(imprimir_matriz(calendario, "Calendario combinado", as_text=True))
 
-    elif opcion_horario == "5":
+      elif opcion_horario == "5":
         print(imprimir_reporte_carga(calendario, as_text=True))
         guardar_estado("estado.json", materias, calendario, tareas)
         print("Estado guardado en 'estado.json'.")
 
-    elif opcion_horario == "6":
+      elif opcion_horario == "6":
         materias, matriz_clases, tareas = cargar_estado("estado.json")
         print("Estado cargado.")
 
-    elif opcion_horario == "7":
+      elif opcion_horario == "7":
         exportar_txt("matriz.txt", matriz_clases)
         print("Matriz exportada a 'matriz.txt'.")
 
-    elif opcion_horario == "0":
+      elif opcion_horario == "0":
         print("Saliendo del programa...")
         break
 
-    else:
+      else:
         print("Opción inválida. Intenta nuevamente.")
     Codigo.main()
   elif opcion == 5:

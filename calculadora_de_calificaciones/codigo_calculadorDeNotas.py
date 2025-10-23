@@ -10,11 +10,12 @@ def calPorClase(): # calificacion promedio por clase
         calProm += nota * peso
         pesoProm += peso
         n = input("Quieres agregar otra calificacion de su materia (y si si, n si no)?")
-        if n == "n":
+        if n == "no":
             final = calProm/pesoProm # formula de calificacion final 
             break
-    print("su nota promedio es: ", final)
-    return [final,nombreDeClass,pesoProm]
+    print("su nota promedio de la clase" + nombreDeClass + " es: ", final)
+    return [final,nombreDeClass ,pesoProm]
+calPorClase()
 '''  
 CASOS DE PRUEBA:
 
@@ -110,6 +111,7 @@ def baseDeDatosdeNotas(clase, nota, meta, prioridad):
         for filas in range (len(baseDeDatos[columnas])):
            print(baseDeDatos[columnas][filas], end = "-------") # usando las notas del usuario va creando renglones por cada clase registrada
         print("\n")
+    return baseDeDatosdeNotas
 
 # study planner calendar (day (goes untill the day of the exam), hours available, topics to study, priority of topic (based on dificulty of topic))
 def calendario ( temas, horasLibres, dificultad, hoy, fechaExamen):
@@ -128,10 +130,8 @@ def calendario ( temas, horasLibres, dificultad, hoy, fechaExamen):
             calendario[a+1].append(temasDeHoy[l]) # se le agregan los temas del dia
     for columnas in range (len(calendario)):
         for filas in range (len(calendario[columnas])):
-           print(calendario[columnas][filas], end = "-------") # usando las notas del usuario va creando renglones por cada clase registrada
-        print("\n")
-    print(calendario)
-calendario(["algebra",'calculo','geografia'],12,[7,8,9],24,27)
+           print(calendario[columnas][filas], end = "-------") # formateando el calendario
+    return calendario
 
 def Archivo (baseDeDatosdeNotas,calendario): # usa baseDeDatos y calendario para crear un archivo de expediente
     baseDeDatos = open("ArchivoDeTexto.txt","+w")
@@ -143,7 +143,6 @@ def Archivo (baseDeDatosdeNotas,calendario): # usa baseDeDatos y calendario para
     baseDeDatos.write(calendario)
     baseDeDatos.seek(0)
     baseDeDatos.read()
-
 
 def menu ():
   print(f'''
