@@ -15,7 +15,6 @@ def calPorClase(): # calificacion promedio por clase
             break
     print("su nota promedio de la clase" + nombreDeClass + " es: ", final)
     return [final,nombreDeClass ,pesoProm]
-calPorClase()
 '''  
 CASOS DE PRUEBA:
 

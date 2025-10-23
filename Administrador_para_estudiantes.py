@@ -19,7 +19,7 @@ def menu():
 def main():
   while True:
     opcion = menu()
-    if opcion in ["1","2","3","4","5"]:
+    if opcion in ["1","2","3","4","5", "6","7"]:
       opcion = int(opcion)
       break
     else:
@@ -39,18 +39,17 @@ def main():
         nmaterias = int(input("Por curiosidad, cuantas materias quisieras poner en tu base de Datos? "))
         i = 0
         j = 0
-        lista = []
-        cont = 0
         dificultad = " "
         prioridad = []
         clase = []
         nota = []
         meta = []
-        while i < len(final[0]):
-          while j < len (final[0]):
-            clase.append( final [i])
-            nota.append(final[i + 1])
-            meta.append(qNNPP[1])
+        while i < nmaterias:
+          final = codigo_calculadorDeNotas.calPorClase()
+          while j < nmaterias:
+            clase.append( final [1])
+            nota.append(final[0])
+            meta.append(codigo_calculadorDeNotas.qNNPP(final[0]))
             while type(dificultad) == str:
               dificultad = int(input("En la escala del 1 al 10, que tan dificil es tu clase? "))
               if type(dificultad) == str and dificultad < 1 or dificultad > 10:
@@ -58,10 +57,79 @@ def main():
               if type(dificultad) == int and dificultad in [1,2,3,4,5,6,7,8,9,10]:
                 prioridad.append(dificultad)
                 break
+            if type(dificultad) != str:
+               print("Error!!!")
+               break
             j += 1
+          if j >= nmaterias:
+            break
           i += 1
-          lista.append([clase,nota,meta,dificultad])
-        print(lista)   
+          if i >= nmaterias :
+            baseDeNotas = codigo_calculadorDeNotas.baseDeDatosdeNotas(clase,nota,meta,prioridad)
+            break
+      if optCal == 5:
+         ntemas = int(input("cuantos temas quisiera registrar? "))
+         temas = []
+         dificultad = []
+         for i in range (ntemas):
+            tema = input("agregue un tema: ")
+            dificil = int(input("en la escala del 1 al 10, que tan dificil es el tema " + tema ": "))
+            dificultad.append(dificil)
+            temas.append(tema)
+         horasLibres = int(input("en promedio cuanto tiempo libre tienes a la semana? "))
+         hoy = int(input("que dia del mes estamos hoy? "))
+         fechaExamen = int(input("que dia del mes es el examen? "))
+         calendario = codigo_calculadorDeNotas.calendario(temas,horasLibres,dificultad,hoy,fechaExamen)
+      if optCal == 6:
+        #base de notas
+        nmaterias = int(input("Por curiosidad, cuantas materias quisieras poner en tu base de Datos? "))
+        i = 0
+        j = 0
+        dificultad = " "
+        prioridad = []
+        clase = []
+        nota = []
+        meta = []
+        while i < nmaterias:
+          final = codigo_calculadorDeNotas.calPorClase()
+          while j < nmaterias:
+            clase.append( final [1])
+            nota.append(final[0])
+            meta.append(codigo_calculadorDeNotas.qNNPP(final[0]))
+            while type(dificultad) == str:
+              dificultad = int(input("En la escala del 1 al 10, que tan dificil es tu clase? "))
+              if type(dificultad) == str and dificultad < 1 or dificultad > 10:
+                print("ERROR: respuesta no valida")
+              if type(dificultad) == int and dificultad in [1,2,3,4,5,6,7,8,9,10]:
+                prioridad.append(dificultad)
+                break
+            if type(dificultad) != str:
+               print("Error!!!")
+               break
+            j += 1
+          if j >= nmaterias:
+            break
+          i += 1
+          if i >= nmaterias :
+            baseDeNotas = codigo_calculadorDeNotas.baseDeDatosdeNotas(clase,nota,meta,prioridad)
+        #calendario
+        ntemas = int(input("cuantos temas quisiera registrar? "))
+        temas = []
+        dificultad = []
+        for i in range (ntemas):
+          tema = input("agregue un tema: ")
+          dificil = int(input("en la escala del 1 al 10, que tan dificil es el tema " + tema ": "))
+          dificultad.append(dificil)
+          temas.append(tema)
+        horasLibres = int(input("en promedio cuanto tiempo libre tienes a la semana? "))
+        hoy = int(input("que dia del mes estamos hoy? "))
+        fechaExamen = int(input("que dia del mes es el examen? "))
+        calendario = codigo_calculadorDeNotas.calendario(temas,horasLibres,dificultad,hoy,fechaExamen)
+        archivo = codigo_calculadorDeNotas.Archivo(baseDeNotas,calendario)
+      elif optCal == 7:
+         print("adios :D")
+         break
+            
   elif opcion == 2:
     Seguimiento_Alimenticio. asegurar_archivos()
 
@@ -201,6 +269,7 @@ def main():
         print("Estado cargado.")
 
       elif opcion_horario == "7":
+        
         exportar_txt("matriz.txt", matriz_clases)
         print("Matriz exportada a 'matriz.txt'.")
 
