@@ -122,7 +122,7 @@ def Archivo (baseDeDatosdeNotas,calendario): # usa baseDeDatos y calendario para
     baseDeDatos.write(calendario)
     baseDeDatos.seek(0)
     baseDeDatos.read()
-
+#Archivo(baseDeDatosdeNotas(["Matematicas","Computacion","Optativa"],[75,60,73],[80,70,80],[9,8,7]), calendario(["Algebra","Calculo","Strings","Archivos"],12,[9,8,7,8],24,28)
 def menu ():
   print(f'''
   1. Caificaion por clase
