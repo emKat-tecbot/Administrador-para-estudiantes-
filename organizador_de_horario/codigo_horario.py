@@ -104,27 +104,6 @@ def mostrar_clases(materias: list[dict], as_text: bool = False):
         hrs = int(m.get("horas_semanales", 0))
         lines.append(f"{nom}: {hrs} horas/semana")
     return "\n".join(lines) if as_text else lines
-
-"""
-Función: materias_a_tuplas
-Descripción:
-Convierte una lista de materias en una lista de tuplas (nombre, horas).
-
-Algoritmo:
-1) Iterar materias; tomar nombre y convertir horas a entero.
-2) Agregar (nombre, horas) al resultado y devolverlo.
-"""
-def materias_a_tuplas(materias: list[dict]) -> list[tuple[str, int]]:
-    r = []
-    for m in materias:
-        nom = str(m.get("nombre", "")).strip()
-        try:
-            hrs = int(m.get("horas_semanales", 0))
-        except Exception:
-            hrs = 0
-        r.append((nom, hrs))
-    return r
-
 """
 Función: total_horas_materias
 Descripción:
@@ -565,28 +544,6 @@ def imprimir_reporte_carga(matriz: list[list[str]], as_text: bool = False):
         data = r[dia]
         lines.append(f"{dia:10s}  clases: {data['clases']:2d} | tareas: {data['tareas']:2d} | libres: {data['libres']:2d}")
     return "\n".join(lines) if as_text else lines
-
-"""
-Función: porcentaje_ocupacion
-Descripción:
-Calcula el porcentaje de ocupación de la matriz (slots no LIBRE).
-
-Algoritmo:
-1) Si la matriz está vacía, devolver 0.0.
-2) Contar el total de celdas y cuántas no son LIBRE.
-3) Devolver (ocupadas / total) * 100.0.
-"""
-def porcentaje_ocupacion(matriz: list[list[str]]) -> float:
-    if not matriz or not matriz[0]:
-        return 0.0
-    total = len(matriz) * len(matriz[0])
-    ocupadas = 0
-    for fila in matriz:
-        for c in fila:
-            if c != LIBRE:
-                ocupadas += 1
-    return (ocupadas / total) * 100.0
-
 """
 Función: guardar_estado
 Descripción:
