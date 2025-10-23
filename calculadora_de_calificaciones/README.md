@@ -8,5 +8,6 @@ Las calculadoras de notas con herramientas usadas para calcular calificaciones, 
 * Calculo del promedio
 * Calculo de nota mínima para pasar un examen
 * Analisis de progreso y mejoramiento de notas
-* Calculo de tiempo de studio minimo necesario para pasar el examen final
-  
+* Creacion de una base de datos de tus notas
+* creacion de un calendario de estudio para mejorar notas
+* creacion de un expediente que contiene el calendario y la base de notas
