@@ -15,24 +15,14 @@ def calPorClase(): # calificacion promedio por clase
             break
     print("su nota promedio de la clase" + nombreDeClass + " es: ", final)
     return [final,nombreDeClass ,pesoProm]
-'''  
-CASOS DE PRUEBA:
-
-Caso 1: 
+# calPorClase()
+'''
 Entrada: 
     Nota 1: 88   Peso: 20
     Nota 2: 85   Peso: 20
     Nota 3: 90   Peso: 30
     Nota 4: 75   Peso: 30
 Salida:  84.1
-
-Caso 2: 
-Entrada:
-    Nota 1: 65,15
-    Nota 2: 75, 10
-    Nota 3: 90, 15
-    Nota 4: 53, 60
-Salida = 62.6
 '''
 def qNNPP (final): # que nota necesitare para pasar 
     final = final
@@ -44,22 +34,14 @@ def qNNPP (final): # que nota necesitare para pasar
     else:
         print("La calificaion que necesitas para alcanzar %d es %d" %(objetivo,minimo))
     return minimo
+# qNNPP()
 '''
-Casos de prueba:
-
 Caso 1:
 Entrada:
     Nota: 84.1
     Target: 90
     Peso: 60
 Salida: 99.8 
-
-Caso 2:
-Entrada:
-    Nota: 62.6
-    Target: 70
-    Peso: 80
-Salida: 79.3
 
 '''
 def porgresoDeNota (): #enseña si estas mejorandpo tus notas o no
@@ -83,16 +65,11 @@ def porgresoDeNota (): #enseña si estas mejorandpo tus notas o no
         print("Tus notas estan empeorando, a trabajar se ha dicho!")
     else:
         print("Tus notas son iguales")
+# pogresoDeNota()
 '''
-CASOS DE PRUEBA
-
 Caso 1:
 Entrada: 90, 80, 70, 60
 Salida: Tus notas estan empeorando, a trabajar se ha dicho!
-
-Caso 2:
-Entrada: 60, 59, 75, 89, 90, 50
-Salida: Estas mejorando tus calificaciones, sigue asi!
 '''
 
 def baseDeDatosdeNotas(clase, nota, meta, prioridad):
@@ -111,12 +88,14 @@ def baseDeDatosdeNotas(clase, nota, meta, prioridad):
            print(baseDeDatos[columnas][filas], end = "-------") # usando las notas del usuario va creando renglones por cada clase registrada
         print("\n")
     return baseDeDatosdeNotas
+    #baseDeDatosdeNotas(["Matematicas","Computacion","Optativa"],[75,60,73],[80,70,80],[9,8,7])
 
 # study planner calendar (day (goes untill the day of the exam), hours available, topics to study, priority of topic (based on dificulty of topic))
 def calendario ( temas, horasLibres, dificultad, hoy, fechaExamen):
     dias = fechaExamen - hoy #dias para el examen
     temasRep = [] # repeticion de temas (mientras mas dificil mas se repite y por ende mas aparecen enel calendario)
     calendario = [["Dia","Horas a estudiar","Temas a estudiar"]] # primer renglon de calendario
+    horasLibres = horasLibres/7
     for i in range (len(temas)):
         temasRep.extend(temas * dificultad[i])   
     for a in range (dias): # ceacion del calendario
@@ -131,6 +110,7 @@ def calendario ( temas, horasLibres, dificultad, hoy, fechaExamen):
         for filas in range (len(calendario[columnas])):
            print(calendario[columnas][filas], end = "-------") # formateando el calendario
     return calendario
+    #calendario(["Algebra","Calculo","Strings","Archivos"],12,[9,8,7,8],24,28)
 
 def Archivo (baseDeDatosdeNotas,calendario): # usa baseDeDatos y calendario para crear un archivo de expediente
     baseDeDatos = open("ArchivoDeTexto.txt","+w")
